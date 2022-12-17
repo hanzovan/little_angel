@@ -1,0 +1,88 @@
+{% extends "kids/layout.html" %}
+{% block title %}
+
+    add new course
+
+{% endblock %}
+{% block main %}
+
+    <h1>Add new course</h1>
+    <div>
+        <form action="{% url 'kids:add_course' %}" method="post">
+            {% csrf_token %}
+            <div class="input-line">
+                <div class="input-left">
+                    <p>Title</p>
+                </div>
+                <input class="input" name="title" type="text" autofocus autocomplete="off">
+                <div class="input-right">
+                    <p>course's name</p>
+                </div>
+            </div>
+            <div class="input-line">
+                <div class="input-left">
+                    <p>Description</p>
+                </div>
+                <textarea style="width: 400px; height: 100px;" class="input-area" name="description"></textarea>
+            </div>
+            <div class="input-line">
+                <div class="input-left">
+                    <p>Category</p>
+                </div>
+                <input class="input" name="category" type="text" autocomplete="off">                
+            </div>
+            <div class="input-line">
+                <div class="input-left">
+                    <p>Image URL</p>
+                </div>
+                <input class="input" name="img_URL" type="url" autocomplete="off">
+            </div>            
+            <div class="input-line">
+                <div class="input-left">
+                    <p>Cost (USD)</p>
+                </div>
+                <input class="input" name="cost" type="number" autocomplete="off">
+                <div class="input-right">
+                    <p>Monthly or 4 weeks</p>
+                </div>
+            </div>
+            <div class="input-line">
+                <div class="input-left">
+                    <p>Starting Date</p>
+                </div>
+                <input class="input" name="starting_date" type="date" autocomplete="off">
+                <div class="input-right">
+                    <p>the day the kid begin the class</p>
+                </div>
+            </div>
+            <div class="input-line">
+                <div class="input-left">
+                    <p>Time cost</p>
+                </div>
+                <input class="input" name="time_cost" type="number" autocomplete="off">
+                <div class="input-right">
+                    <p>Hours per 4 weeks</p>
+                </div>
+            </div>
+            <div class="input-line">
+                <div class="input-left">
+                    <p>Benefits</p>
+                </div>
+                <select name="aspect" class="input" multiple style="height: 150px; width: 200px;">
+                    {% for aspect in aspects %}
+
+                        <option value="{{ aspect.title }}">{{ aspect.title }}</option>
+
+                    {% endfor %}
+                </select>
+                <div class="input-right">
+                    <p>Hold Ctrl (Window) or CMD (Mac) to choose more than one option</p>
+                </div>
+            </div>
+            <div class="normal-btn">
+                <button class="login-btn">Add course</button>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

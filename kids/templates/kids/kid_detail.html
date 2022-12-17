@@ -1,0 +1,49 @@
+{% extends "kids/layout.html" %}
+{% block title %}
+
+    kid detail
+
+{% endblock %}
+{% block main %}
+
+    <h1>Kid detail</h1>
+    {% for detail in details_1 %}
+
+        <div class="list-line-detail">
+            <div class="list-left-detail">
+                <p>{{ detail.key }}</p>
+            </div>
+            <div class="list-right-detail">
+                <strong>{{ detail.value }}</strong>
+            </div>
+        </div>
+
+    {% endfor %}
+    {% for detail in details_2 %}
+
+        <div class="list-line-detail">
+            <div class="list-left-detail">
+                <p>{{ detail.key }}</p>
+            </div>
+            <div class="list-right-detail-link">              
+                <form action="{% url 'kids:evaluate' %}" method="post">
+                    {% csrf_token %}
+                    <input name="id" type="hidden" value="{{ kid.id }}">
+                    <input name="aspect" type="hidden" value="{{ detail.sub }}">
+                    <button class="btn btn-link"><strong>{{ detail.value }}</strong></button>
+                </form>
+            </div>
+        </div>
+
+    {% endfor %}       
+        
+    <div>
+        <form action="{% url 'kids:kid_evaluate' %}" method="post">
+            {% csrf_token %}
+            <input name="id" type="hidden" value="{{ kid.id }}">
+            <button class="btn btn-link">Evaluate</button>
+        </form>
+    </div>
+    
+
+{% endblock %}

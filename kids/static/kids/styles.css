@@ -1,0 +1,125 @@
+body {
+  font-family: sans-serif;
+  font-size: 16px; }
+
+.input-line, .list-line, .list-line-detail {
+  clear: both;
+  vertical-align: baseline;
+  padding: 30px 0 30px 0; }
+
+.input-left, .list-left, .list-left-detail {
+  float: left;
+  min-width: 0;
+  width: 22%;
+  height: 42px;
+  line-height: 45px;
+  vertical-align: middle; }
+
+.input, .list-middle, .list-middle-detail {
+  float: left;
+  display: block;
+  min-width: 167px;
+  min-height: 41px;
+  height: 5px;
+  width: 250px;
+  margin-right: 50px; }
+
+.input-right, .list-right, .list-right-detail, .list-right-detail-link {
+  display: inline-block;
+  vertical-align: middle;
+  min-width: 167px;
+  min-height: 41px;
+  height: 42px;
+  width: 32%;
+  line-height: 45px; }
+
+body {
+  color: black;
+  padding: 10px; }
+
+main {
+  min-height: 400px; }
+
+nav {
+  padding: 10px;
+  margin-bottom: 10px; }
+
+footer {
+  margin-top: 50px; }
+
+h1 {
+  color: brown; }
+
+li {
+  line-height: 45px; }
+
+.input-left {
+  font-size: 16px;
+  font-weight: bold; }
+
+.input {
+  border: 1px solid grey;
+  font-size: 16px;
+  padding: 0 20px 0 20px; }
+
+.input-right {
+  font-size: 13px;
+  font-style: italic; }
+
+.list-line {
+  margin: 50px 0 300px 200px; }
+
+.list-line-detail {
+  margin: 10px 0 10px 200px; }
+
+.list-left-detail {
+  width: 35%; }
+
+.list-middle {
+  margin-left: 50px; }
+
+.list-middle-detail {
+  margin-left: 200px; }
+
+.list-right-detail {
+  margin-left: 200px;
+  color: blue; }
+
+.list-right-detail-link {
+  margin-left: 160px; }
+
+.i-left {
+  font-size: 15px; }
+
+.normal-btn {
+  margin: 50px 0 0 250px; }
+
+#login-btn {
+  background-color: #a9a9a9;
+  color: white;
+  font-weight: bold;
+  font-family: arial, sans-serif;
+  position: center;
+  width: 120px;
+  height: 40px;
+  border-color: transparent;
+  overflow: hidden;
+  font-size: 18px;
+  border-radius: 5px; }
+
+#login-btn:hover {
+  background-color: #878787; }
+
+.no-bullet {
+  list-style-type: none; }
+
+form {
+  margin-left: 30px; }
+
+.login-form {
+  margin-left: 200px; }
+
+.under-btn-text {
+  margin: 50px 0 0 400px; }
+
+/*# sourceMappingURL=styles.css.map */

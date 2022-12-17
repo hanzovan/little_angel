@@ -1,0 +1,55 @@
+{% extends "kids/layout.html" %}
+{% block title %}
+
+    register
+
+{% endblock %}
+{% block main %}
+
+    <h1>Register</h1>
+    <div>
+        <form action="{% url 'kids:register' %}" method="post">
+            {% csrf_token %}
+            <div class="input-line">
+                <div class="input-left">
+                    <p>Username</p>
+                </div>
+                <input class="input" name="username" type="text" autofocus autocomplete="off">
+                <div class="input-right">
+                    <p>Should be unique</p>
+                </div>
+            </div>
+            <div class="input-line">
+                <div class="input-left">
+                    <p>Password</p>
+                </div>
+                <input class="input" name="password" type="password" autocomplete="off">
+                <div class="input-right">
+                    <p>At least 6 characters with special symbol and numbers</p>
+                </div>
+            </div>
+            <div class="input-line">
+                <div class="input-left">
+                    <p>Confirm password</p>
+                </div>
+                <input class="input" name="confirm" type="password" autocomplete="off">
+                <div class="input-right">
+                    <p>Should be exactly as the password above</p>
+                </div>
+            </div>
+            <div class="input-line">
+                <div class="input-left">
+                    <p>Email</p>
+                </div>
+                <input class="input" name="email" type="text" autocomplete="off">
+                <div class="input-right">
+                    <p>Should be valid email</p>
+                </div>
+            </div>
+            <div class="normal-btn">
+                <button id="login-btn">Register</button>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

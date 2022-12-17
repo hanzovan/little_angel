@@ -1,0 +1,37 @@
+{% extends "kids/layout.html" %}
+{% block title %}
+
+    kids
+
+{% endblock %}
+{% block main %}
+
+    <h1>Kids</h1>
+    <ul class="no-bullet">
+        {% for kid in kids %}
+
+            <li>
+                <div class="list-line">
+                    <div class="list-left">
+                        <ul class="no-bullet">
+                            <li><i class="i-left">Nick name</i></li>
+                            <li><i class="i-left">Full name</i></li>
+                        </ul>
+                    </div>
+                    <div class="list-middle">
+                        <ul class="no-bullet">
+                            <li><a href="{% url 'kids:kid_detail' kid_id=kid.id %}"><strong>{{ kid.nickname }}</strong></a></li>                            
+                            <li><strong>{{ kid.full_name }}</strong></li>                            
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+        {% empty %}
+
+            <li>No kid yet</li>
+
+        {% endfor %}
+    </ul>
+
+{% endblock %}

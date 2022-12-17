@@ -1,0 +1,177 @@
+1. Implement AbstractUser on models and this occur on my terminal:
+    auth.User.groups: (fields.E304) Reverse accessor for 'auth.User.groups' clashes with reverse accessor for 'kids.User.groups'.
+        HINT: Add or change a related_name argument to the definition for 'auth.User.groups' or 'kids.User.groups'.
+    auth.User.user_permissions: (fields.E304) Reverse accessor for 'auth.User.user_permissions' clashes with reverse accessor for 'kids.User.user_permissions'.
+        HINT: Add or change a related_name argument to the definition for 'auth.User.user_permissions' or 'kids.User.user_permissions'.
+    kids.User.groups: (fields.E304) Reverse accessor for 'kids.User.groups' clashes with reverse accessor for 'auth.User.groups'.
+        HINT: Add or change a related_name argument to the definition for 'kids.User.groups' or 'auth.User.groups'.
+    kids.User.user_permissions: (fields.E304) Reverse accessor for 'kids.User.user_permissions' clashes with reverse accessor for 'auth.User.user_permissions'.
+        HINT: Add or change a related_name argument to the definition for 'kids.User.user_permissions' or 'auth.User.user_permissions'.
+
+    SOLVED: 
+        Step 1: add 
+            AUTH_USER_MODEL = 'kids.User' 
+        to settings.py
+    
+        Step 2: in terminal: 
+            python3 manage.py makemigrations
+            
+        Step 3: in terminal:
+            python3 manage.py migrate
+
+2. Access MANYTOMANY field from models in html file (jinja):
+    SOLVED: 
+        Use .all.values
+        In index.html:
+            {{ course.goal.all.values }}
+
+3. Add comma after every object in for loop except the last one
+    SOLVED:
+        Use if not forloop.last
+        In index.html:
+            {% if not forloop.last %}
+
+                {{ i.title }},
+
+            {% else %}
+
+                {{ i.title }}
+
+            {% endif %}
+
+        Notice: while you can use if with only ", "
+            but the comma will give 
+            extra space between object.
+
+4. 2 columns in index page did not equal, 1 was low while the other was tall.
+    SOLVED:
+        Use line-height for list item in css file
+        In styles.css
+            li {
+                line-height: 35px;
+            }
+
+5. TextChoices model won't display in template as needed
+    Gender: FE instead of Female
+    SOLVED
+        In template, instead of using:
+            {{ kid.gender }}
+        Change to:
+            {{ kid.get_gender_display }}
+
+6. It is impossible to add a non-nullable field 'parent' 
+    to kid without specifying a default. 
+    This is because the database needs something to populate existing rows.
+
+    This happen because I added new field inside a model class
+    which was has some data in it
+
+    SOLVED
+        In models.py, in the new field, add null=True, and blank=True
+            class Kid(models.Model)
+                parent = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE, related_name="creators")
+
+        Then in terminal window, makemigrations and migrate again
+
+7. Error, need to migrate back to previous version
+    SOLVED
+        In terminal:
+            python3 manage.py showmigrations kids
+        Because there are 13 migrations, and I want to move back to 0009 version:
+            python3 manage.py migrate kids 0009
+        Then, in migrations folder, delete 0010, 0011, 0012, 0013 versions.
+
+8. I tried to use post in kid detail, but it's quite very hard to
+    redirect user back to it if I need to implement a evaluation round after that:
+
+    IN views.py
+    @login_required
+    def kiddo(request):
+        # If user submitted form
+        if request.method == "POST":
+            # Define kid              
+            kid = Kid.objects.get(pk=request.POST['id'])
+            
+            return render(request, "kids/kiddo.html", {
+                "kid": kid
+            })
+
+        # If user was being redirect
+        else:
+            kid = Kid.objects.get(pk=request.session['kid_id'])
+            nay_message = request.session['nay_message']
+            request.session['kid_id'] = ''
+            request.session['nay_message'] = ''
+            
+            return render(request, "kids/kiddo.html", {
+                "kid": kid,
+                "nay_message": nay_message
+            })
+
+    # Evaluate kid and display it in kid.html
+    @login_required
+    def evaluate(request):
+        if request.method == "POST":
+            # Define kid
+            id = request.POST['id']
+            kid = Kid.objects.get(pk=id)
+            current_date = str(date.today())
+            birthday = str(kid.birthday)
+            age = days_between(birthday, current_date)/365
+
+            if age < 6:            
+                request.session['kid_id'] = id
+                request.session['nay_message'] = "Kid has to be at least 6 years old"
+                return HttpResponseRedirect(reverse('kids:kiddo'))
+
+            return render(request, "kids/evaluation.html")
+
+
+    IN kiddo.html:
+    {% extends "kids/layout.html" %}
+    {% block title %}
+
+        Kiddo detail
+
+    {% endblock %}
+    {% block main %}
+
+        <h1>Kiddo detail</h1>
+        <ul class="no-bullet">
+            <li>{{ kid.nickname }}</li>
+            <li>{{ kid.full_name }}</li>
+        </ul>
+        <form action="{% url 'kids:evaluate' %}" method="post">
+            {% csrf_token %}
+            <input name="id" type="hidden" value="{{ kid.id }}">
+            <button class="btn btn-link">Evaluate</button>
+        </form>
+
+    {% endblock %}
+
+
+    IN evaluation.html:
+    {% extends "kids/layout.html" %}
+    {% block title %}
+
+        evaluation
+
+    {% endblock %}
+    {% block main %}
+
+        <h1>Evaluation</h1>
+
+    {% endblock %}
+
+    This can help to redirect back from evaluation(request)
+    to kiddo(request). However, it will fail if refresh the page
+    after that
+
+
+9. Get field name from quote:
+    SOLVED:
+        aspect = request.POST['aspect']
+        kid = Kid.objects.get(pk=id)
+        field_object = Kid._meta.get_field(aspect)
+        field_value = field_object.value_from_object(kid)
+

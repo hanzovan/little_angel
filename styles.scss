@@ -1,0 +1,158 @@
+$normal-color: black;
+$big-color: brown;
+%normal-font {
+    font-family: sans-serif;
+    font-size: 16px;
+}
+%line {
+    clear: both;
+    vertical-align: baseline;
+    padding: 30px 0 30px 0;
+}
+%line-left {
+    float: left;
+    min-width: 0;
+    width: 22%;
+    height: 42px;
+
+    // match height between left vs middle
+    line-height: 45px;
+
+    vertical-align: middle;
+}
+%line-middle {
+    float: left;
+    display: block;
+    min-width: 167px;
+    min-height: 41px;
+    height: 5px;
+    width: 250px;
+
+    margin-right: 50px;
+}
+%line-right {
+    display: inline-block;
+    vertical-align: middle;
+    min-width: 167px;
+    min-height: 41px;
+    height: 42px;
+    width: 32%;
+
+    line-height: 45px;
+}
+
+
+body {
+    color: $normal-color;
+    @extend %normal-font;
+    padding: 10px;
+}
+main {
+    min-height: 400px;
+}
+nav {
+    padding: 10px;
+    margin-bottom: 10px;
+}
+footer {
+    margin-top: 50px;
+}
+h1 {
+    color: $big-color;
+}
+
+// Ensure line height are equal between column
+li {
+    line-height: 45px;
+}
+
+
+.input-line {
+    @extend %line;
+}
+.input-left {
+    @extend %line-left;
+    font-size: 16px;
+    font-weight: bold;
+}
+.input {
+    @extend %line-middle;
+
+    border: 1px solid grey;
+    font-size: 16px;
+    padding: 0 20px 0 20px;
+}
+.input-right {
+    @extend %line-right;
+    font-size: 13px;
+    font-style: italic;
+}
+.list-line {
+    @extend %line;
+    margin: 50px 0 300px 200px;
+}
+.list-line-detail {
+    @extend %line;
+    margin: 10px 0 10px 200px;
+}
+.list-left {
+    @extend %line-left;       
+}
+.list-left-detail {
+    @extend %line-left;    
+    width: 35%;
+}
+.list-middle {
+    @extend %line-middle;
+    margin-left: 50px;
+}
+.list-middle-detail {
+    @extend %line-middle;
+    margin-left: 200px;
+}
+.list-right {
+    @extend %line-right;
+}
+.list-right-detail {
+    @extend %line-right;
+    margin-left: 200px;
+    color: blue;
+}
+.list-right-detail-link {
+    @extend %line-right;
+    margin-left: 160px;
+}
+.i-left {
+    font-size: 15px;
+}
+.normal-btn {
+    margin: 50px 0 0 250px;
+}
+#login-btn {
+    background-color: #a9a9a9;
+    color: white;
+    font-weight: bold;
+    font-family: arial, sans-serif;
+    position: center;
+    width: 120px;
+    height: 40px;
+    border-color: transparent;
+    overflow: hidden;
+    font-size: 18px;
+    border-radius: 5px;
+}
+#login-btn:hover {
+    background-color: #878787;
+}
+.no-bullet {
+    list-style-type: none;
+}
+form {
+    margin-left: 30px;
+}
+.login-form {
+    margin-left: 200px;
+}
+.under-btn-text {
+    margin: 50px 0 0 400px;
+}

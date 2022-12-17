@@ -1,0 +1,52 @@
+{% extends "kids/layout.html" %}
+{% block title %}
+
+    add kid
+
+{% endblock %}
+{% block main %}
+
+    <h1>Add kid</h1>
+    <div>
+        <form action="{% url 'kids:add_kid' %}" method="post">
+            {% csrf_token %}
+            <div class="input-line">
+                <div class="input-left">
+                    <p>Nick name</p>
+                </div>
+                <input class="input" name="nickname" type="text" autocomplete="off" autofocus>
+                <div class="input-right">
+                    Your kid's short name
+                </div>
+            </div>
+            <div class="input-line">
+                <div class="input-left">
+                    <p>Full name</p>
+                </div>
+                <input class="input" name="full_name" type="text" autocomplete="off">
+                <div class="input-right">
+                    Your kid's long version name
+                </div>
+            </div>
+            <div class="input-line">
+                <div class="input-left">
+                    <p>Birthday</p>
+                </div>
+                <input class="input" name="birthday" type="date" autocomplete="off">
+            </div>
+            <div class="input-line">
+                <div class="input-left">
+                    <p>Gender</p>
+                </div>
+                <select class="input" name="gender" style="height: 42px;">
+                    <option value="FE">Female</option>
+                    <option value="MA">Male</option>
+                </select>
+            </div>
+            <div class="normal-btn">
+                <button id="login-btn">Add Kid</button>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}

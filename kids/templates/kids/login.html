@@ -1,0 +1,31 @@
+{% extends "kids/layout.html" %}
+{% block title %}
+
+    log in
+
+{% endblock %}
+{% block main %}
+
+<h1>Login</h1>
+<div class="login-form">
+    <form action="{% url 'kids:login' %}" method="post">
+        {% csrf_token %}
+        <div class="input-line">
+            <div class="input-left">
+                <p>Username</p>
+            </div>
+            <input class="input" name="username" type="text" autofocus autocomplete="off">
+        </div>
+        <div class="input-line">
+            <div class="input-left">
+                <p>Password</p>
+            </div>
+            <input class="input" name="password" type="password" autocomplete="off">
+        </div>
+        <div class="normal-btn">
+            <button id="login-btn">Log in</button>
+        </div>       
+    </form>
+</div>
+<div class="under-btn-text"><p>Don't have an account? <a href="{% url 'kids:register' %}">Create one</a></p></div>
+{% endblock %}
