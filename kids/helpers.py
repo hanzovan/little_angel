@@ -1,4 +1,6 @@
 from datetime import datetime, timedelta, date
+from .models import User, Kid, Course, Aspect, Evaluation, Expectation
+
 def strong_password(s):
     special_list = [
         "~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+", "[", "]", "{", "}", "?"
@@ -28,3 +30,4 @@ def days_between(d1, d2):
 
     # Return absolute value
     # return abs((d2 - d1).days)
+

@@ -330,7 +330,51 @@ def aspect_evaluate(request):
         kid = Kid.objects.get(pk=id)
         field_object = Kid._meta.get_field(aspect)
         field_value = field_object.value_from_object(kid)
+        field_display = kid._get_FIELD_display(field_object)
 
-        return HttpResponse(f"{field_value}")
+        details_2 = [
+        {'key':'Status', 'sub':'status','value': kid.get_status_display},
+        {'key':'Physical Growth', 'sub':'physical_growth', 'value': kid.get_physical_growth_display},
+        {'key':'Motor', 'sub':'motor','value': kid.get_motor_display},
+        {'key':'Cognitive/Intellectual', 'sub':'cog_int', 'value': kid.get_cog_int_display},
+        {'key':'Social Emotional', 'sub':'social_emotional', 'value': kid.get_social_emotional_display},
+        {'key':'Language Communication', 'sub':'language_communication', 'value': kid.get_language_communication_display},
+        {'key':'Gender Growth', 'sub':'gender_growth', 'value': kid.get_gender_growth_display},
+        {'key':'Race', 'sub': 'race', 'value': kid.get_race_display}
+    ]
+
+        def getKey(my_list, sub_key):
+            for i in my_list:
+                if i['sub'] == sub_key:
+                    the_key = i['key']
+            return the_key
+
+        aspect_name = getKey(details_2, aspect)
+        
+        return render(request, "kids/evaluation.html", {
+            "kid": kid,
+            "aspect": aspect,
+            "aspect_name": aspect_name,
+            "field_object": field_object,
+            "field_value": field_value,
+            "field_display": field_display
+        })
+
+
+@login_required
+def evaluation(request):
+    if request.method == "POST":
+        # Define variable
+        id = request.POST['id']
+        kid = Kid.objects.get(pk=id)
+        aspect = request.POST['aspect']
+        new_evaluation = request.POST['new_evaluation']
+
+        setattr(kid, aspect, new_evaluation)
+        kid.save()
+
+        request.session['yay_message'] = "Updated aspect successfully"
+        return HttpResponseRedirect(reverse('kids:kid_detail', args=id))
+
 
 

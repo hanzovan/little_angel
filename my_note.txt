@@ -174,4 +174,16 @@
         kid = Kid.objects.get(pk=id)
         field_object = Kid._meta.get_field(aspect)
         field_value = field_object.value_from_object(kid)
+        display = kid._get_FIELD_display(field_object)
+
+
+10. Update field value with field_name as quote
+    SOLVED:
+        id = request.POST['id']
+        aspect = request.POST['aspect']
+        kid = Kid.objects.get(pk=id)
+        new_evaluation = request.POST['new_evaluation']
+
+        setattr(kid, aspect, new_evaluation)
+        kid.save()
 
