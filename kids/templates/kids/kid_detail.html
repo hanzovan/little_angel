@@ -1,12 +1,20 @@
 {% extends "kids/layout.html" %}
+{% load static %}
 {% block title %}
 
     kid detail
 
 {% endblock %}
+{% block script %}
+
+    <script src="{% static 'kids/kid_detail.js' %}"></script>
+
+{% endblock %}
 {% block main %}
 
     <h1>Kid detail</h1>
+    <button class="color-btn" data-font_weight="bold">Bold</button>
+    <button class="color-btn" data-font_weight="normal">Normal</button>
     {% for detail in details_1 %}
 
         <div class="list-line-detail">
@@ -30,20 +38,26 @@
                     {% csrf_token %}
                     <input name="id" type="hidden" value="{{ kid.id }}">
                     <input name="aspect" type="hidden" value="{{ detail.sub }}">
-                    <button class="btn btn-link"><strong>{{ detail.value }}</strong></button>
+                    <button class="btn btn-link">
+                        {% if detail.value == 'Very Low' or detail.value == 'Low' %}
+
+                            <strong style="color: red;">{{ detail.value }}</strong>
+                            
+                        {% elif detail.value == 'Excellent' or detail.value == 'Good' %}
+
+                            <strong style="color: green;">{{ detail.value }}</strong>
+
+                        {% else %}
+
+                            <strong style="color: blue;">{{ detail.value }}</strong>
+
+                        {% endif %}
+                    </button>
                 </form>
             </div>
         </div>
 
     {% endfor %}       
-        
-    <div>
-        <form action="{% url 'kids:kid_evaluate' %}" method="post">
-            {% csrf_token %}
-            <input name="id" type="hidden" value="{{ kid.id }}">
-            <button class="btn btn-link">Evaluate</button>
-        </form>
-    </div>
     
 
 {% endblock %}

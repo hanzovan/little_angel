@@ -12,7 +12,6 @@ urlpatterns = [
     path('add_kid', views.add_kid, name="add_kid"),
     path('kids', views.kids, name="kids"),
     path('kids/<int:kid_id>', views.kid_detail, name="kid_detail"),
-    path('kids/kid_evaluate', views.kid_evaluate, name="kid_evaluate"),
     path('kids/evaluate', views.aspect_evaluate, name="evaluate"),
     path('kids/evaluation', views.evaluation, name="evaluation")
 ]

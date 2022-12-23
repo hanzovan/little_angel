@@ -1,12 +1,22 @@
 {% extends "kids/layout.html" %}
+{% load static %}
 {% block title %}
 
     index
 
 {% endblock %}
+{% block script %}
+    <script src="{% static 'kids/index.js' %}"></script>
+{% endblock %}
 {% block main %}
 
-    <h1>Hello angels</h1>
+    <h1>Courses</h1>
+    <p style="margin-left: 1000px;">Currency</p>
+    <select id="currency" style="margin-left: 1000px;">
+        <option selected value="USD">USD</option>
+        <option value="EUR">EUR</option>
+        <option value="VND">VND</option>
+    </select>
     <ul class="no-bullet">
         {% for course in courses %}
 
@@ -28,7 +38,7 @@
                         <ul class="no-bullet">
                             <li><strong>{{ course.title }}</strong></li>
                             <li><strong>{{ course.category }}</strong></li>
-                            <li><strong>${{ course.cost }}</strong></li>
+                            <li><strong id="cost">{{ course.cost }}</strong> <strong id="cost-currency">USD</strong></li>
                             <li><strong>{{ course.time_cost }} hours</strong></li>
                             <li>
                                 <strong>

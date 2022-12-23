@@ -187,3 +187,9 @@
         setattr(kid, aspect, new_evaluation)
         kid.save()
 
+11. Use a button outside of form tag
+    SOLVED:
+        in form tag:
+            <form id="form1" action="..." method="">
+            </form>
+            <button type="submit" form="form1">Click</button>

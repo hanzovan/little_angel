@@ -7,20 +7,32 @@
 {% block main %}
 
     <h1>Evaluation</h1>
-    <div class="list-line-detail">
-        <div class="list-left-detail">
+    <div class="list-line-detail-2">
+        <div class="list-left-detail-2">
             <p>{{ aspect_name }}</p>
         </div>
-        <div class="list-right-detail">
-            <strong>{{ field_display }}</strong>
+        <div class="list-right-detail-2">
+            {% if field_display == 'Very Low' or field_display == 'Low' %}
+
+                <strong style="color: red; margin-left: 50px;">{{ field_display }}</strong>
+
+            {% elif field_display == 'Good' or field_display == 'Excellent' %}
+
+                <strong style="color: green; margin-left: 50px;">{{ field_display }}</strong>
+
+            {% else %}
+
+                <strong style="color: blue; margin-left: 50px;">{{ field_display }}</strong>
+
+            {% endif %}
         </div>
     </div>
-    <div class="list-line-detail">
-        <div class="list-left-detail">
+    <div class="list-line-detail-2">
+        <div class="list-left-detail-2">
             <p>New Evaluation</p>
         </div>
-        <div class="list-right-detail">
-            <form action="{% url 'kids:evaluation' %}" method="post">
+        <div class="list-right-detail-2">
+            <form onsubmit="return confirm('Do you really want to change the evaluation?');" id="form1" action="{% url 'kids:evaluation' %}" method="post">
                 {% csrf_token %}
                 <input name="id" type="hidden" value="{{ kid.id }}">
                 <input name="aspect" type="hidden" value="{{ aspect }}">
@@ -30,13 +42,13 @@
                     <option value="3">NORMAL</option>
                     <option value="4">GOOD</option>
                     <option value="5">EXCELLENT</option>
-                </select>
-                <div class="normal-btn">
-                    <button>Confirm</button>
-                </div>
+                </select>                
             </form>
             
         </div>
+    </div>
+    <div class="confirm-btn">
+        <button type="submit" form="form1" id="login-btn">Confirm</button>
     </div>
     
     

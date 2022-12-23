@@ -7,8 +7,8 @@
 {% block main %}
 
     <h1>Add new course</h1>
-    <div>
-        <form action="{% url 'kids:add_course' %}" method="post">
+    <div style="margin-bottom: 170px">
+        <form id="add_course-form" action="{% url 'kids:add_course' %}" method="post">
             {% csrf_token %}
             <div class="input-line">
                 <div class="input-left">
@@ -79,10 +79,12 @@
                     <p>Hold Ctrl (Window) or CMD (Mac) to choose more than one option</p>
                 </div>
             </div>
-            <div class="normal-btn">
-                <button class="login-btn">Add course</button>
-            </div>
+            
         </form>
+        
+    </div>
+    <div class="add_course-btn">
+        <button type="submit" form="add_course-form" id="login-btn">Add course</button>
     </div>
 
 {% endblock %}

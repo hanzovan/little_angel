@@ -2,12 +2,12 @@ body {
   font-family: sans-serif;
   font-size: 16px; }
 
-.input-line, .list-line, .list-line-detail {
+.input-line, .list-line, .list-line-kids, .list-line-detail, .list-line-detail-2 {
   clear: both;
   vertical-align: baseline;
   padding: 30px 0 30px 0; }
 
-.input-left, .list-left, .list-left-detail {
+.input-left, .list-left, .list-left-detail, .list-left-detail-2 {
   float: left;
   min-width: 0;
   width: 22%;
@@ -24,7 +24,7 @@ body {
   width: 250px;
   margin-right: 50px; }
 
-.input-right, .list-right, .list-right-detail, .list-right-detail-link {
+.input-right, .list-right, .list-right-detail, .list-right-detail-2, .list-right-detail-link {
   display: inline-block;
   vertical-align: middle;
   min-width: 167px;
@@ -69,11 +69,20 @@ li {
 .list-line {
   margin: 50px 0 300px 200px; }
 
+.list-line-kids {
+  margin: 50px 0 150px 200px; }
+
 .list-line-detail {
+  margin: 10px 0 10px 200px; }
+
+.list-line-detail-2 {
   margin: 10px 0 10px 200px; }
 
 .list-left-detail {
   width: 35%; }
+
+.list-left-detail-2 {
+  width: 25%; }
 
 .list-middle {
   margin-left: 50px; }
@@ -85,6 +94,10 @@ li {
   margin-left: 200px;
   color: blue; }
 
+.list-right-detail-2 {
+  margin-left: 100px;
+  color: blue; }
+
 .list-right-detail-link {
   margin-left: 160px; }
 
@@ -93,6 +106,15 @@ li {
 
 .normal-btn {
   margin: 50px 0 0 250px; }
+
+.confirm-btn {
+  margin: 50px 0 0 400px; }
+
+.add_course-btn {
+  margin: 50px 0 0 300px; }
+
+.add_kid-btn {
+  margin: 70px 0 0 300px; }
 
 #login-btn {
   background-color: #a9a9a9;
@@ -105,7 +127,8 @@ li {
   border-color: transparent;
   overflow: hidden;
   font-size: 18px;
-  border-radius: 5px; }
+  border-radius: 5px;
+  line-height: 20px; }
 
 #login-btn:hover {
   background-color: #878787; }

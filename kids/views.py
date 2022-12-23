@@ -301,24 +301,7 @@ def kid_detail(request, kid_id):
         "nay_message": nay_message,
         "yay_message": yay_message
     })
-
-
-@login_required
-def kid_evaluate(request):
-    if request.method == "POST":
-        current_date = str(date.today())
-        id = request.POST['id']
-        kid = Kid.objects.get(pk=id)
-        birthday = str(kid.birthday)
-        age = days_between(birthday, current_date)/365
-
-        if age < 6:
-            request.session['nay_message'] = "Child's age has to be older or equal to 6"
-            return HttpResponseRedirect(reverse('kids:kid_detail', args=id))
-            
-
-        return render(request, "kids/evaluation.html")
-
+    
 
 # Evaluate kid and display it in kid.html
 @login_required
@@ -375,6 +358,7 @@ def evaluation(request):
 
         request.session['yay_message'] = "Updated aspect successfully"
         return HttpResponseRedirect(reverse('kids:kid_detail', args=id))
+
 
 
 
