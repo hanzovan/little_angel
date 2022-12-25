@@ -292,12 +292,13 @@ def kid_detail(request, kid_id):
         {'key':'Race', 'sub': 'race', 'value': kid.get_race_display}
     ]
 
-    
+    courses = kid.learner.all()
     
     return render(request, "kids/kid_detail.html", {
         "details_1": details_1,
         "details_2": details_2,
         "kid": kid,
+        "courses": courses,
         "nay_message": nay_message,
         "yay_message": yay_message
     })
@@ -360,5 +361,41 @@ def evaluation(request):
         return HttpResponseRedirect(reverse('kids:kid_detail', args=id))
 
 
+@login_required
+def course_register(request, course_id):
+    course = Course.objects.get(pk=course_id)
+    kids = Kid.objects.filter(parent=request.user)
+
+    # Get students list of the course who is parented by user
+    students = course.student.all().intersection(kids)
+
+    # Access non students
+    non_students = kids.difference(students)
+
+    # non_students = Kid.objects.exclude(id__in=[o.id for o in students])
+
+    return render(request, "kids/course_register.html", {
+        "course": course,
+        "kids": kids,
+        "students": students,
+        "non_students": non_students
+    })
 
 
+@login_required
+def re_evaluate(request):
+    # If form was submitted
+    if request.method == "POST":
+        
+        # Define variables
+        kid_id = request.POST['kid_id']
+        course_id = request.POST['course_id']
+        kid = Kid.objects.get(pk=kid_id)
+        course = Course.objects.get(pk=course_id)
+
+        # Add kid to the course
+        course.student.add(kid)
+        course.save()
+
+        request.session['yay_message'] = "Kid was registered to course successfully"
+        return HttpResponseRedirect(reverse('kids:index'))

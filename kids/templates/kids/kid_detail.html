@@ -55,9 +55,39 @@
                     </button>
                 </form>
             </div>
-        </div>
+        </div>        
 
     {% endfor %}       
     
+    <div class="list-line-detail">
+        <div class="list-left-detail">
+            <p>Currently in courses</p>
+        </div>
+        <div class="list-right-detail">
+            {% for course in courses %}
+
+                {% if not forloop.last %}
+
+                    <a href="{% url 'kids:course_register' course_id=course.id %}">
+                        <strong>{{ course }},</strong>
+                    </a>
+                                        
+
+                {% else %}
+
+                    <a href="{% url 'kids:course_register' course_id=course.id %}">
+                        <strong>{{ course }}</strong>
+                    </a>                                        
+
+                {% endif %}
+
+            {% empty %}
+
+                <strong>This kid was not in any course yet.</strong>
+                <a href="{% url 'kids:index' %}">Go to course list</a>                
+
+            {% endfor %}
+        </div>
+    </div>
 
 {% endblock %}

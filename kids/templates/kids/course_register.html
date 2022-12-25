@@ -1,0 +1,94 @@
+{% extends "kids/layout.html" %}
+{% block title %}
+
+    Course Register
+
+{% endblock %}
+{% block main %}
+
+    <h1>{{ course.title }}</h1>
+    <div class="list-line">
+        <div class="list-left">
+            <img src="{{ course.img_URL }}" alt="{{ course.img_URL }}"width="240" height="180">                
+        </div>
+        <div class="list-middle">
+            <ul class="no-bullet">
+                <li><i class="i-left">Title</i></li>
+                <li><i class="i-left">Category</i></li>
+                <li><i class="i-left">Cost (per 4 weeks)</i></li>
+                <li><i class="i-left">Time (per 4 weeks)</i></li>
+                <li><i class="i-left">Current Students</i></li>                
+                <li><i class="i-left">Developing aspects</i></li>
+            </ul>
+        </div>
+        <div class="list-right">
+            <ul class="no-bullet">
+                <li><strong>{{ course.title }}</strong></li>
+                <li><strong>{{ course.category }}</strong></li>
+                <li><strong id="cost">{{ course.cost }}</strong> <strong id="cost-currency">USD</strong></li>                
+                <li><strong>{{ course.time_cost }} hours</strong></li>
+                <li><strong>
+                    {% for student in students %}
+
+                        {% if not forloop.last %}
+
+                            <a href="{% url 'kids:kid_detail' kid_id=student.id %}">
+                                {{ student.nickname }},
+                            </a>                            
+
+                        {% else %}
+                            <a href="{% url 'kids:kid_detail' kid_id=student.id %}">
+                                {{ student.nickname }}
+                            </a>                            
+
+                        {% endif %}
+
+                    {% empty %}
+
+                        You have no kid in this course
+
+                    {% endfor %}
+                </strong></li>
+                <li>
+                    <strong>
+                    
+                        {% for i in course.goal.all.values %}                                                                       
+
+                            {% if not forloop.last %}
+
+                                {{ i.title }},
+
+                            {% else %}
+
+                                {{ i.title }}
+
+                            {% endif %}
+
+                        {% endfor %}
+
+                    </strong>
+                </li>
+            </ul>
+        </div>
+    </div>
+    {% if non_students %}
+
+        <h4 style="margin: 350px 0 50px 300px; color: blue;">Register this course for your kid</h4>
+        <form id="course_register_form" action="{% url 'kids:re_evaluate' %}" method="post">
+            {% csrf_token %}
+            <select style="margin: 0 0 50px 400px;" name="kid_id">
+                {% for kid in non_students %}
+
+                    <option value="{{ kid.id }}">{{ kid.nickname }}</option>
+
+                {% endfor %}
+            </select>
+            <input name="course_id" type="hidden" value="{{ course.id }}">
+
+        </form>
+        <button style="margin-left: 400px;" type="submit" id="login-btn" form="course_register_form">Register</button>
+
+    {% endif %}
+    
+
+{% endblock %}
