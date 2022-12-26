@@ -289,7 +289,8 @@ def kid_detail(request, kid_id):
         {'key':'Social Emotional', 'sub':'social_emotional', 'value': kid.get_social_emotional_display},
         {'key':'Language Communication', 'sub':'language_communication', 'value': kid.get_language_communication_display},
         {'key':'Gender Growth', 'sub':'gender_growth', 'value': kid.get_gender_growth_display},
-        {'key':'Race', 'sub': 'race', 'value': kid.get_race_display}
+        {'key':'Race', 'sub': 'race', 'value': kid.get_race_display},
+        {'key':'Time available', 'sub':'time', 'value': kid.time}
     ]
 
     courses = kid.learner.all()
@@ -396,6 +397,11 @@ def re_evaluate(request):
         # Add kid to the course
         course.student.add(kid)
         course.save()
+
+        # Minus time available for kid
+        time = kid.time
+        kid.time = time - course.time_cost
+        kid.save()
 
         request.session['yay_message'] = "Kid was registered to course successfully"
         return HttpResponseRedirect(reverse('kids:index'))

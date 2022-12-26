@@ -13,7 +13,7 @@ class Kid(models.Model):
     birthday = models.DateField()
     parent = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE, related_name='creators')
     
-    # Time available per month by hours
+    # Time available per 4 weeks by hours
     time = models.IntegerField(default=672)
     
     class Gender(models.TextChoices):
