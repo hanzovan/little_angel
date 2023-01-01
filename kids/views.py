@@ -456,10 +456,13 @@ def schedule(request):
 @login_required
 def refresh_duration(request):    
 
-    time_to_spends = Time_to_spend.objects.all()
+    # Refresh time to spend for all kids of this user
+    time_to_spends = Time_to_spend.objects.filter(kid__parent=User.objects.get(username=request.user.username))
     for time_to_spend in time_to_spends:
         time_to_spend.duration = time_to_spend.course.time_cost
         time_to_spend.save()
+
+    # Adjust refresh date for only this user
     user = User.objects.get(username=request.user.username)
     user.last_refresh_date = date.today()
     user.next_refresh_date = user.last_refresh_date + timedelta(days=28)
