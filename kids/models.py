@@ -5,6 +5,10 @@ import datetime
 # Create your models here.
 class User(AbstractUser):
     account = models.PositiveIntegerField(default=0)
+    
+    # Define refresh day for all courses, kids every 4 weeks for user
+    last_refresh_date = models.DateField(blank=True, null=True)
+    next_refresh_date = models.DateField(blank=True, null=True)
 
 
 class Kid(models.Model):
@@ -99,3 +103,10 @@ class Expectation(models.Model):
 
     # Point from 1 to 5
     qualified = models.IntegerField(choices=[(i, i) for i in range(1, 6)], blank=True)
+
+
+# Time the kid have to spend for course every 4 weeks
+class Time_to_spend(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="time_left")
+    kid = models.ForeignKey(Kid, on_delete=models.CASCADE, related_name="timing")
+    duration = models.IntegerField()

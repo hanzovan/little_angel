@@ -6,7 +6,7 @@ from datetime import datetime, timedelta, date
 
 from django.contrib.auth import authenticate, login, logout
 
-from .models import User, Kid, Course, Aspect, Evaluation, Expectation
+from .models import User, Kid, Course, Aspect, Evaluation, Expectation, Time_to_spend
 from django.contrib.auth.decorators import login_required
 
 # Import error handler
@@ -258,6 +258,11 @@ def kid_detail(request, kid_id):
             "kids": Kid.objects.filter(parent=request.user)
         })
 
+    courses = kid.learner.all()
+
+    # Calculate all cost for all course of this kid
+    cost = sum(i.cost for i in courses)
+
     # Define message
     if 'nay_message' not in request.session:
         request.session['nay_message'] = []
@@ -277,7 +282,8 @@ def kid_detail(request, kid_id):
         {'key':'Nick Name', 'sub':'nickname','value': kid.nickname},
         {'key':'Full Name', 'sub':'full_name','value': kid.full_name},
         {'key':'Birthday', 'sub':'birthday','value': kid.birthday},
-        {'key':'Gender', 'sub':'gender','value': kid.get_gender_display}        
+        {'key':'Gender', 'sub':'gender','value': kid.get_gender_display},
+        {'key':'Free time per week', 'sub':'time', 'value': kid.time/4}      
     ]
 
     # Information that change overtime and evaluation
@@ -289,17 +295,18 @@ def kid_detail(request, kid_id):
         {'key':'Social Emotional', 'sub':'social_emotional', 'value': kid.get_social_emotional_display},
         {'key':'Language Communication', 'sub':'language_communication', 'value': kid.get_language_communication_display},
         {'key':'Gender Growth', 'sub':'gender_growth', 'value': kid.get_gender_growth_display},
-        {'key':'Race', 'sub': 'race', 'value': kid.get_race_display},
-        {'key':'Time available', 'sub':'time', 'value': kid.time}
+        {'key':'Race', 'sub': 'race', 'value': kid.get_race_display}        
     ]
 
-    courses = kid.learner.all()
+    
+    
     
     return render(request, "kids/kid_detail.html", {
         "details_1": details_1,
         "details_2": details_2,
         "kid": kid,
         "courses": courses,
+        "cost": cost,
         "nay_message": nay_message,
         "yay_message": yay_message
     })
@@ -363,7 +370,7 @@ def evaluation(request):
 
 
 @login_required
-def course_register(request, course_id):
+def course_detail(request, course_id):
     course = Course.objects.get(pk=course_id)
     kids = Kid.objects.filter(parent=request.user)
 
@@ -375,7 +382,7 @@ def course_register(request, course_id):
 
     # non_students = Kid.objects.exclude(id__in=[o.id for o in students])
 
-    return render(request, "kids/course_register.html", {
+    return render(request, "kids/course_detail.html", {
         "course": course,
         "kids": kids,
         "students": students,
@@ -384,7 +391,7 @@ def course_register(request, course_id):
 
 
 @login_required
-def re_evaluate(request):
+def course_register(request):
     # If form was submitted
     if request.method == "POST":
         
@@ -403,5 +410,61 @@ def re_evaluate(request):
         kid.time = time - course.time_cost
         kid.save()
 
+        # Add time to spend for the next 4 weeks
+        time_to_spend = Time_to_spend(course=course, kid=kid, duration=course.time_cost)
+        time_to_spend.save()
+
         request.session['yay_message'] = "Kid was registered to course successfully"
         return HttpResponseRedirect(reverse('kids:index'))
+
+
+@login_required
+def quit_course(request):
+    # If form was submitted
+    if request.method == "POST":
+
+        # Define variables
+        kid_id = request.POST['kid_id']
+        course_id = request.POST['course_id']
+        kid = Kid.objects.get(pk=kid_id)
+        course = Course.objects.get(pk=course_id)
+
+        # Remove kid from course
+        course.student.remove(kid)
+        course.save()
+
+        # Add time back to kid
+        time = kid.time
+        kid.time = time + course.time_cost
+        kid.save()
+
+        # Remove time to spend
+        time_to_spend = Time_to_spend.objects.get(course=course, kid=kid)
+        time_to_spend.delete()
+
+        request.session['yay_message'] = "Kid was quitted from course"
+        return HttpResponseRedirect(reverse('kids:index'))
+
+
+# Allow user to manage kid's schedule
+@login_required
+def schedule(request):
+    return render(request, "kids/schedule.html")
+
+
+# Allow user to refresh duration that need to be spent for courses for all kids
+@login_required
+def refresh_duration(request):    
+
+    time_to_spends = Time_to_spend.objects.all()
+    for time_to_spend in time_to_spends:
+        time_to_spend.duration = time_to_spend.course.time_cost
+        time_to_spend.save()
+    user = User.objects.get(username=request.user.username)
+    user.last_refresh_date = date.today()
+    user.next_refresh_date = user.last_refresh_date + timedelta(days=28)
+    user.save()
+
+    return HttpResponse(user.next_refresh_date)
+
+

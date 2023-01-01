@@ -68,14 +68,14 @@
 
                 {% if not forloop.last %}
 
-                    <a href="{% url 'kids:course_register' course_id=course.id %}">
+                    <a href="{% url 'kids:course_detail' course_id=course.id %}">
                         <strong>{{ course }},</strong>
                     </a>
                                         
 
                 {% else %}
 
-                    <a href="{% url 'kids:course_register' course_id=course.id %}">
+                    <a href="{% url 'kids:course_detail' course_id=course.id %}">
                         <strong>{{ course }}</strong>
                     </a>                                        
 
@@ -89,5 +89,19 @@
             {% endfor %}
         </div>
     </div>
+    <div style="margin-top: 50px;" class="list-line-detail">
+        <div class="list-left-detail">
+            <p>Total cost per 4 weeks</p>
+        </div>
+        <div class="list-right-detail">
+            <strong id="total_cost" style="color: red; font-size: 24px;">{{ cost }}</strong> <strong style="font-size: 24px; color: red;" id="cost-currency">USD</strong>            
+        </div>        
+    </div>
+    <p style="margin-left: 1000px;">Currency</p>
+    <select id="currency" style="margin-left: 1000px;">
+        <option selected value="USD">USD</option>
+        <option value="EUR">EUR</option>
+        <option value="VND">VND</option>
+    </select>
 
 {% endblock %}

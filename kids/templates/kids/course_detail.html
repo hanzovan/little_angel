@@ -74,7 +74,7 @@
     {% if non_students %}
 
         <h4 style="margin: 350px 0 50px 300px; color: blue;">Register this course for your kid</h4>
-        <form id="course_register_form" action="{% url 'kids:re_evaluate' %}" method="post">
+        <form id="course_register_form" action="{% url 'kids:course_register' %}" method="post">
             {% csrf_token %}
             <select style="margin: 0 0 50px 400px;" name="kid_id">
                 {% for kid in non_students %}
@@ -87,6 +87,23 @@
 
         </form>
         <button style="margin-left: 400px;" type="submit" id="login-btn" form="course_register_form">Register</button>
+
+    {% endif %}
+    {% if students %}
+
+        <h4 style="margin: 350px 0 50px 300px; color: blue;">Quit this course for your kid</h4>
+        <form onsubmit="return confirm('Do you really want to quit this kid from course?');" id="quit_course_form" action="{% url 'kids:quit_course' %}" method="post">
+            {% csrf_token %}
+            <select style="margin: 0 0 50px 400px;" name="kid_id">
+                {% for student in students %}
+
+                    <option value="{{ student.id }}">{{ student.nickname }}</option>
+
+                {% endfor %}           
+            </select>
+            <input name="course_id" type="hidden" value="{{ course.id}}">
+        </form>
+        <button style="margin-left: 400px;" type="submit" form="quit_course_form" id="login-btn">Quit</button>
 
     {% endif %}
     

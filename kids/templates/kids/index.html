@@ -23,7 +23,7 @@
             <li>
                 <div class="list-line">
                     <div class="list-left">
-                        <a href="{% url 'kids:course_register' course_id=course.id %}"><img src="{{ course.img_URL }}" alt="{{ course.img_URL }}"width="240" height="180"></a>                        
+                        <a href="{% url 'kids:course_detail' course_id=course.id %}"><img src="{{ course.img_URL }}" alt="{{ course.img_URL }}"width="240" height="180"></a>                        
                     </div>
                     <div class="list-middle">
                         <ul class="no-bullet">
@@ -36,7 +36,7 @@
                     </div>
                     <div class="list-right">
                         <ul class="no-bullet">
-                            <li><strong><a href="{% url 'kids:course_register' course_id=course.id %}">{{ course.title }}</a></strong></li>
+                            <li><strong><a href="{% url 'kids:course_detail' course_id=course.id %}">{{ course.title }}</a></strong></li>
                             <li><strong>{{ course.category }}</strong></li>
                             <li><strong id="cost">{{ course.cost }}</strong> <strong id="cost-currency">USD</strong></li>
                             <li><strong>{{ course.time_cost }} hours</strong></li>

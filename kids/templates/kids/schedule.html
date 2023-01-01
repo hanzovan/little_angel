@@ -1,0 +1,12 @@
+{% extends "kids/layout.html" %}
+{% block title %}
+
+    Schedule
+
+{% endblock %}
+{% block main %}
+
+    <h1>Schedule</h1>
+    <a href="{% url 'kids:refresh_duration' %}">Refresh all courses duration</a>
+
+{% endblock %}
