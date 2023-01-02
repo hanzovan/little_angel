@@ -18,5 +18,6 @@ urlpatterns = [
     path('course/register', views.course_register, name="course_register"),
     path('course/quit_course', views.quit_course, name="quit_course"),
     path('schedule', views.schedule, name="schedule"),
-    path('refresh_duration', views.refresh_duration, name="refresh_duration")
+    path('refresh_duration', views.refresh_duration, name="refresh_duration"),
+    path('spend_time', views.spend_time, name="spend_time")
 ]

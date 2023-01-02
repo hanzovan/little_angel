@@ -12,6 +12,8 @@ from django.contrib.auth.decorators import login_required
 # Import error handler
 from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils.datastructures import MultiValueDictKeyError
+
 
 # Create your views here.
 def index(request):
@@ -468,6 +470,39 @@ def refresh_duration(request):
     user.next_refresh_date = user.last_refresh_date + timedelta(days=28)
     user.save()
 
-    return HttpResponse(user.next_refresh_date)
+    request.session['yay_message'] = "All time to spend were refreshed"
+    return HttpResponseRedirect(reverse("kids:index"))
 
 
+# Allow user to spend time with one course
+@login_required
+def spend_time(request):
+    if request.method == "POST":
+        # Define kid and course variables
+        kid_id = request.POST['kid_id']
+
+        try:
+            course_id = request.POST['course_id']
+        except MultiValueDictKeyError:
+            request.session['nay_message'] = "You need to choose course"        
+            return HttpResponseRedirect(reverse('kids:kid_detail', args=kid_id))
+        
+        kid = Kid.objects.get(pk=kid_id)
+        
+        course = Course.objects.get(pk=course_id)
+        
+        # Define the duration of the course that this kid have to spend for 4 weeks
+        time_to_spend = Time_to_spend.objects.get(kid=kid, course=course)
+        
+        # Define the duration that the kid have to spend this time
+        duration_today = request.POST['duration']
+
+        # Minus duration spent today to the duration of 4 weeks
+        time_to_spend.duration = time_to_spend.duration - int(duration_today)
+        time_to_spend.save()
+
+        # Inform successfully and redirect to kid detail page
+        request.session['yay_message'] = "Congratulation for finish today's course"
+        return HttpResponseRedirect(reverse("kids:kid_detail", args=request.POST['kid_id']))
+
+        
