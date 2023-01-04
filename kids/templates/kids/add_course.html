@@ -6,8 +6,8 @@
 {% endblock %}
 {% block main %}
 
-    <h1>Add new course</h1>
-    <div style="margin-bottom: 170px">
+    <h1 class="page-title">Add new course</h1>
+    <div class="add_course-form" style="margin-bottom: 170px">
         <form id="add_course-form" action="{% url 'kids:add_course' %}" method="post">
             {% csrf_token %}
             <div class="input-line">

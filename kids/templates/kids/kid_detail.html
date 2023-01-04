@@ -12,114 +12,167 @@
 {% endblock %}
 {% block main %}
 
-    <h1>Kid detail</h1>
-    <button class="color-btn" data-font_weight="bold">Bold</button>
-    <button class="color-btn" data-font_weight="normal">Normal</button>
-    {% for detail in details_1 %}
+    <h1 class="page-title">{{ kid.nickname }}</h1>
 
+    <div class="show-hide-btn">
+        <button class="btn btn-link" id="showForm" style="font-size: 24px;">Spend time to learn course</button>
+        <button class="btn btn-link" id="hideForm" style="font-size: 24px; margin-left: 110px;">Hide</button>
+    </div>    
+
+    <div id="learn-course">
+        <h5 style="margin-left: 50px;">{{ kid.nickname }} need to do these courses</h5>
+        {% for time_to_spend in time_to_spends %}
+
+            {% if time_to_spend.duration > 0 %}
+
+                <p style="margin: 20px 0 20px 220px; font-size: 24px; font-weight: bold;">{{ time_to_spend.course.title.upper }}</p>
+                <p style="margin: 20px 0 20px 150px; font-size: 24px; font-weight: bold;"><span style="color: red;">{{ time_to_spend.duration }} hours more</span></p>
+               
+            {% endif %}
+            
+
+            
+
+        {% endfor %}
+        {% for time_to_spend in time_to_spends %}
+
+        {% if time_to_spend.duration == 0 %}
+
+            <p style="margin: 20px 0 20px 220px; font-size: 24px; font-weight: bold;">{{ time_to_spend.course.title.upper }}</p>
+            <p style="margin: 20px 0 20px 60px; font-size: 24px; font-weight: bold;"><span style="color: green;">{{ kid.nickname }} did all required time this month!</span></p>
+
+        {% endif %}
+
+        {% endfor %}
+
+        <form id="spend-time-form" action="{% url 'kids:spend_time' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="kid_id" value="{{ kid.id }}">
+            <div style="margin: 50px 0 0 110px;">
+                <p><h3>Choose course to do</h3></p>
+            </div>
+            <div style="margin: 20px 0 50px 170px;">
+                <select name="course_id">
+                    <option disabled selected value="">Choose course</option>
+                    {% for course in courses %}
+    
+                        <option value="{{ course.id }}">{{ course.title.upper }}</option>
+    
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div style="margin: 50px 0 0 170px;">
+                <p><h3>Duration</h3></p>
+            </div>
+            <div style="margin: 20px 0 50px 185px;">
+                <select name="duration">
+                    <option value="1">1 HOUR</option>
+                    <option value="2">2 HOURS</option>
+                </select>
+            </div>            
+        </form>        
+        <button style="margin: 10px 0 0 200px;" id="login-btn" type="submit" form="spend-time-form">Confirm</button>
+    </div>
+
+    <div class="show-hide-btn">
+        <button class="btn btn-link" id="show_kid_detail" style="font-size: 24px;">Check {{ kid.nickname }}'s detail</button>
+        <button class="btn btn-link" id="hide_kid_detail" style="font-size: 24px; margin-left: 80px;">Hide detail</button>
+    </div>    
+
+    <div id="kid_detail">
+        {% for detail in details_1 %}
+
+            <div class="list-line-detail">
+                <div class="list-left-detail">
+                    <p>{{ detail.key }}</p>
+                </div>
+                <div class="list-right-detail">
+                    <strong>{{ detail.value }}</strong>
+                </div>
+            </div>
+
+        {% endfor %}
+        {% for detail in details_2 %}
+
+            <div class="list-line-detail">
+                <div class="list-left-detail">
+                    <p>{{ detail.key }}</p>
+                </div>
+                <div class="list-right-detail-link">              
+                    <form action="{% url 'kids:evaluate' %}" method="post">
+                        {% csrf_token %}
+                        <input name="id" type="hidden" value="{{ kid.id }}">
+                        <input name="aspect" type="hidden" value="{{ detail.sub }}">
+                        <button class="btn btn-link">
+                            {% if detail.value == 'Very Low' or detail.value == 'Low' %}
+
+                                <strong style="color: red;">{{ detail.value }}</strong>
+                                
+                            {% elif detail.value == 'Excellent' or detail.value == 'Good' %}
+
+                                <strong style="color: green;">{{ detail.value }}</strong>
+
+                            {% else %}
+
+                                <strong style="color: blue;">{{ detail.value }}</strong>
+
+                            {% endif %}
+                        </button>
+                    </form>
+                </div>
+            </div>        
+
+        {% endfor %}       
+        
         <div class="list-line-detail">
             <div class="list-left-detail">
-                <p>{{ detail.key }}</p>
+                <p>Currently in courses</p>
             </div>
             <div class="list-right-detail">
-                <strong>{{ detail.value }}</strong>
+                {% for course in courses %}
+
+                    {% if not forloop.last %}
+
+                        <a href="{% url 'kids:course_detail' course_id=course.id %}">
+                            <strong>{{ course }},</strong>
+                        </a>
+                                            
+
+                    {% else %}
+
+                        <a href="{% url 'kids:course_detail' course_id=course.id %}">
+                            <strong>{{ course }}</strong>
+                        </a>                                        
+
+                    {% endif %}
+
+                {% empty %}
+
+                    <strong>This kid was not in any course yet.</strong>
+                    <a href="{% url 'kids:index' %}">Go to course list</a>                
+
+                {% endfor %}
             </div>
         </div>
-
-    {% endfor %}
-    {% for detail in details_2 %}
-
-        <div class="list-line-detail">
+        <div style="margin-top: 50px;" class="list-line-detail">
             <div class="list-left-detail">
-                <p>{{ detail.key }}</p>
+                <p>Total cost per 4 weeks</p>
             </div>
-            <div class="list-right-detail-link">              
-                <form action="{% url 'kids:evaluate' %}" method="post">
-                    {% csrf_token %}
-                    <input name="id" type="hidden" value="{{ kid.id }}">
-                    <input name="aspect" type="hidden" value="{{ detail.sub }}">
-                    <button class="btn btn-link">
-                        {% if detail.value == 'Very Low' or detail.value == 'Low' %}
+            <div class="list-right-detail">
+                <strong id="total_cost" style="color: red; font-size: 24px;">{{ cost }}</strong> <strong style="font-size: 24px; color: red;" id="cost-currency">USD</strong>            
+            </div>        
+        </div>
+        <div style="margin: 0 0 50px 780px;">
+            <p>Currency</p>
+            <select id="currency">
+                <option selected value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="VND">VND</option>
+            </select>
+        </div>
+    </div>
 
-                            <strong style="color: red;">{{ detail.value }}</strong>
-                            
-                        {% elif detail.value == 'Excellent' or detail.value == 'Good' %}
-
-                            <strong style="color: green;">{{ detail.value }}</strong>
-
-                        {% else %}
-
-                            <strong style="color: blue;">{{ detail.value }}</strong>
-
-                        {% endif %}
-                    </button>
-                </form>
-            </div>
-        </div>        
-
-    {% endfor %}       
     
-    <div class="list-line-detail">
-        <div class="list-left-detail">
-            <p>Currently in courses</p>
-        </div>
-        <div class="list-right-detail">
-            {% for course in courses %}
-
-                {% if not forloop.last %}
-
-                    <a href="{% url 'kids:course_detail' course_id=course.id %}">
-                        <strong>{{ course }},</strong>
-                    </a>
-                                        
-
-                {% else %}
-
-                    <a href="{% url 'kids:course_detail' course_id=course.id %}">
-                        <strong>{{ course }}</strong>
-                    </a>                                        
-
-                {% endif %}
-
-            {% empty %}
-
-                <strong>This kid was not in any course yet.</strong>
-                <a href="{% url 'kids:index' %}">Go to course list</a>                
-
-            {% endfor %}
-        </div>
-    </div>
-    <div style="margin-top: 50px;" class="list-line-detail">
-        <div class="list-left-detail">
-            <p>Total cost per 4 weeks</p>
-        </div>
-        <div class="list-right-detail">
-            <strong id="total_cost" style="color: red; font-size: 24px;">{{ cost }}</strong> <strong style="font-size: 24px; color: red;" id="cost-currency">USD</strong>            
-        </div>        
-    </div>
-    <p style="margin-left: 1000px;">Currency</p>
-    <select id="currency" style="margin-left: 1000px;">
-        <option selected value="USD">USD</option>
-        <option value="EUR">EUR</option>
-        <option value="VND">VND</option>
-    </select>
-    <h1>Course today</h1>
-    <form id="spend-time-form" action="{% url 'kids:spend_time' %}" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="kid_id" value="{{ kid.id }}">
-        <select name="course_id">
-            <option disabled selected value="">Choose course</option>
-            {% for course in courses %}
-
-                <option value="{{ course.id }}">{{ course.title }}</option>
-
-            {% endfor %}
-        </select>
-        <select name="duration">
-            <option value="1">ONE HOUR</option>
-            <option value="2">TWO HOURS</option>
-        </select>
-    </form>
-    <button type="submit" form="spend-time-form">Learned</button>
 
 {% endblock %}

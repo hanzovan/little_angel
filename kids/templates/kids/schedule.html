@@ -6,7 +6,13 @@
 {% endblock %}
 {% block main %}
 
-    <h1>Schedule</h1>
-    <a href="{% url 'kids:refresh_duration' %}">Refresh all courses duration</a>
+    <h1 class="page-title">Schedule</h1>
+    <div>
+        <p>Refresh all required time for 4 weeks</p>
+        <form onsubmit="return confirm('Do you really want to reset all time for your kids?');" action="{% url 'kids:refresh_duration' %}" method="post">
+            {% csrf_token %}
+            <button>Refresh</button>
+        </form>
+    </div>
 
 {% endblock %}

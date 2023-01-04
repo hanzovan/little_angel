@@ -265,6 +265,9 @@ def kid_detail(request, kid_id):
     # Calculate all cost for all course of this kid
     cost = sum(i.cost for i in courses)
 
+    # Define timing
+    time_to_spends = kid.timing.all()
+
     # Define message
     if 'nay_message' not in request.session:
         request.session['nay_message'] = []
@@ -309,6 +312,7 @@ def kid_detail(request, kid_id):
         "kid": kid,
         "courses": courses,
         "cost": cost,
+        "time_to_spends": time_to_spends,
         "nay_message": nay_message,
         "yay_message": yay_message
     })
@@ -458,20 +462,23 @@ def schedule(request):
 @login_required
 def refresh_duration(request):    
 
-    # Refresh time to spend for all kids of this user
-    time_to_spends = Time_to_spend.objects.filter(kid__parent=User.objects.get(username=request.user.username))
-    for time_to_spend in time_to_spends:
-        time_to_spend.duration = time_to_spend.course.time_cost
-        time_to_spend.save()
+    # If user reach route via submiting form
+    if request.method == "POST":
 
-    # Adjust refresh date for only this user
-    user = User.objects.get(username=request.user.username)
-    user.last_refresh_date = date.today()
-    user.next_refresh_date = user.last_refresh_date + timedelta(days=28)
-    user.save()
+        # Refresh time to spend for all kids of this user
+        time_to_spends = Time_to_spend.objects.filter(kid__parent=User.objects.get(username=request.user.username))
+        for time_to_spend in time_to_spends:
+            time_to_spend.duration = time_to_spend.course.time_cost
+            time_to_spend.save()
 
-    request.session['yay_message'] = "All time to spend were refreshed"
-    return HttpResponseRedirect(reverse("kids:index"))
+        # Adjust refresh date for only this user
+        user = User.objects.get(username=request.user.username)
+        user.last_refresh_date = date.today()
+        user.next_refresh_date = user.last_refresh_date + timedelta(days=28)
+        user.save()
+
+        request.session['yay_message'] = "All time to spend were refreshed"
+        return HttpResponseRedirect(reverse("kids:index"))
 
 
 # Allow user to spend time with one course
@@ -501,8 +508,15 @@ def spend_time(request):
         time_to_spend.duration = time_to_spend.duration - int(duration_today)
         time_to_spend.save()
 
-        # Inform successfully and redirect to kid detail page
-        request.session['yay_message'] = "Congratulation for finish today's course"
+        # If time was spent over the time left
+        if time_to_spend.duration <= 0:
+            time_to_spend.duration = 0
+            time_to_spend.save()
+            request.session['yay_message'] = "Congratulation, kid finished required time for this course this month!"
+
+        else:
+            # Inform successfully and redirect to kid detail page
+            request.session['yay_message'] = "Congratulation for finish today's course"
         return HttpResponseRedirect(reverse("kids:kid_detail", args=request.POST['kid_id']))
 
         

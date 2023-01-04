@@ -1,9 +1,44 @@
 document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.color-btn').forEach(button => {
-        button.onclick = function() {
-            document.querySelector('body').style.fontWeight = button.dataset.font_weight;
-        }
-    })
+    
+    const show_btn = document.querySelector('#showForm');
+    const hide_btn = document.querySelector('#hideForm');
+    const learn_form = document.querySelector('#learn-course');
+    const show_detail_btn = document.querySelector('#show_kid_detail');
+    const hide_detail_btn = document.querySelector('#hide_kid_detail');
+    const kid_detail = document.querySelector('#kid_detail');
+
+    // By default the form is hidden
+    learn_form.style.display = 'none';
+    kid_detail.style.display = 'none';
+    
+    // The hide button is also hidden
+    hide_btn.style.display = 'none';
+    hide_detail_btn.style.display = 'none';
+
+    // When show button is clicked, show the form, hide the show button, show the hide button
+    show_btn.onclick = function() {
+        learn_form.style.display = 'block';
+        show_btn.style.display = 'none';
+        hide_btn.style.display = 'block';
+    }
+    show_detail_btn.onclick = function() {
+        kid_detail.style.display = 'block';
+        show_detail_btn.style.display = 'none';
+        hide_detail_btn.style.display = 'block';
+    }
+
+    // When hide button was click, show the show button, hide the form and the hide button
+    hide_btn.onclick = function() {
+        learn_form.style.display = 'none';
+        show_btn.style.display = 'block';
+        hide_btn.style.display = 'none';
+    }
+    hide_detail_btn.onclick = function() {
+        kid_detail.style.display = 'none';
+        hide_detail_btn.style.display = 'none';
+        show_detail_btn.style.display = 'block';
+    }
+
     // Every time user visit this page set the default rate to USD
     localStorage.setItem('rate', 1);
 

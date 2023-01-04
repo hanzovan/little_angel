@@ -6,8 +6,8 @@
 {% endblock %}
 {% block main %}
 
-    <h1>Add kid</h1>
-    <div>
+    <h1 class="page-title">Add kid</h1>
+    <div class="add_kid-form">
         <form action="{% url 'kids:add_kid' %}" method="post">
             {% csrf_token %}
             <div class="input-line">

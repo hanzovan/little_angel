@@ -177,9 +177,18 @@ li {
 form {
     margin-left: 30px;
 }
-.login-form {
+.login-form, .register-form, .add_kid-form, .add_course-form {
     margin-left: 200px;
 }
 .under-btn-text {
     margin: 50px 0 0 400px;
+}
+.show-hide-btn {
+    margin: 20px 0 20px 450px;
+}
+.page-title {
+    margin: 50px 0 40px 550px;
+}
+#learn-course {
+    margin: 50px 0 50px 350px;
 }

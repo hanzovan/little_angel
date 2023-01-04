@@ -1,12 +1,18 @@
 {% extends "kids/layout.html" %}
+{% load static %}
 {% block title %}
 
     Course Register
 
 {% endblock %}
+{% block script %}
+
+    <script src="{% static 'kids/course_detail.js' %}"></script>
+
+{% endblock %}
 {% block main %}
 
-    <h1>{{ course.title }}</h1>
+    <h1 class="page-title">{{ course.title }}</h1>
     <div class="list-line">
         <div class="list-left">
             <img src="{{ course.img_URL }}" alt="{{ course.img_URL }}"width="240" height="180">                
@@ -72,39 +78,52 @@
         </div>
     </div>
     {% if non_students %}
+        <div style="margin: 50px 0 50px 150px;">
+            <button id="show_course_register">Register this course for your kids</button>
+            <button id="hide_course_register">Hide</button>
+            <div id="register-course">
+                <h4 style="margin: 50px 0 50px 300px; color: blue;">Register this course for your kid</h4>
+                <form id="course_register_form" action="{% url 'kids:course_register' %}" method="post">
+                    {% csrf_token %}
+                    <select style="margin: 0 0 50px 400px;" name="kid_id">
+                        {% for kid in non_students %}
 
-        <h4 style="margin: 350px 0 50px 300px; color: blue;">Register this course for your kid</h4>
-        <form id="course_register_form" action="{% url 'kids:course_register' %}" method="post">
-            {% csrf_token %}
-            <select style="margin: 0 0 50px 400px;" name="kid_id">
-                {% for kid in non_students %}
+                            <option value="{{ kid.id }}">{{ kid.nickname }}</option>
 
-                    <option value="{{ kid.id }}">{{ kid.nickname }}</option>
+                        {% endfor %}
+                    </select>
+                    <input name="course_id" type="hidden" value="{{ course.id }}">
 
-                {% endfor %}
-            </select>
-            <input name="course_id" type="hidden" value="{{ course.id }}">
-
-        </form>
-        <button style="margin-left: 400px;" type="submit" id="login-btn" form="course_register_form">Register</button>
+                </form>
+                <button style="margin-left: 400px;" type="submit" id="login-btn" form="course_register_form">Register</button>
+            </div>
+        </div>       
+        
 
     {% endif %}
     {% if students %}
 
-        <h4 style="margin: 350px 0 50px 300px; color: blue;">Quit this course for your kid</h4>
-        <form onsubmit="return confirm('Do you really want to quit this kid from course?');" id="quit_course_form" action="{% url 'kids:quit_course' %}" method="post">
-            {% csrf_token %}
-            <select style="margin: 0 0 50px 400px;" name="kid_id">
-                {% for student in students %}
+        <div style="margin: 50px 0 50px 150px;">
+            <button id="show_course_quit">Quit this course for your kids</button>
+            <button id="hide_course_quit">Hide</button>
+            <div id="quit-course">
+                <h4 style="margin: 50px 0 50px 300px; color: blue;">Quit this course for your kid</h4>
+                <form onsubmit="return confirm('Do you really want to quit this kid from course?');" id="quit_course_form" action="{% url 'kids:quit_course' %}" method="post">
+                    {% csrf_token %}
+                    <select style="margin: 0 0 50px 400px;" name="kid_id">
+                        {% for student in students %}
 
-                    <option value="{{ student.id }}">{{ student.nickname }}</option>
+                            <option value="{{ student.id }}">{{ student.nickname }}</option>
 
-                {% endfor %}           
-            </select>
-            <input name="course_id" type="hidden" value="{{ course.id}}">
-        </form>
-        <button style="margin-left: 400px;" type="submit" form="quit_course_form" id="login-btn">Quit</button>
-
+                        {% endfor %}           
+                    </select>
+                    <input name="course_id" type="hidden" value="{{ course.id}}">
+                </form>
+                <button style="margin-left: 400px;" type="submit" form="quit_course_form" id="login-btn">Quit</button>
+            </div>
+        </div>
+        
+        
     {% endif %}
     
 

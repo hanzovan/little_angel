@@ -10,13 +10,16 @@
 {% endblock %}
 {% block main %}
 
-    <h1>Courses</h1>
-    <p style="margin-left: 1000px;">Currency</p>
-    <select id="currency" style="margin-left: 1000px;">
-        <option selected value="USD">USD</option>
-        <option value="EUR">EUR</option>
-        <option value="VND">VND</option>
-    </select>
+    <h1 class="page-title">Courses</h1>
+    <div style="margin: 30px 0 50px 580px;">
+        <p>Currency</p>
+        <select id="currency">
+            <option selected value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="VND">VND</option>
+        </select>
+    </div>
+    
     <ul class="no-bullet">
         {% for course in courses %}
 
