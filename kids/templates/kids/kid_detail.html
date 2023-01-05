@@ -20,7 +20,7 @@
     </div>    
 
     <div id="learn-course">
-        <h5 style="margin-left: 50px;">{{ kid.nickname }} need to do these courses</h5>
+        <h5 style="margin-left: 100px;">{{ kid.nickname }} need to do these courses</h5>
         {% for time_to_spend in time_to_spends %}
 
             {% if time_to_spend.duration > 0 %}
@@ -65,8 +65,9 @@
             <div style="margin: 50px 0 0 170px;">
                 <p><h3>Duration</h3></p>
             </div>
-            <div style="margin: 20px 0 50px 185px;">
+            <div style="margin: 20px 0 50px 170px;">
                 <select name="duration">
+                    <option selected disabled value="">Choose duration</option>
                     <option value="1">1 HOUR</option>
                     <option value="2">2 HOURS</option>
                 </select>

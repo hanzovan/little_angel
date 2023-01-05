@@ -452,12 +452,6 @@ def quit_course(request):
         return HttpResponseRedirect(reverse('kids:index'))
 
 
-# Allow user to manage kid's schedule
-@login_required
-def schedule(request):
-    return render(request, "kids/schedule.html")
-
-
 # Allow user to refresh duration that need to be spent for courses for all kids
 @login_required
 def refresh_duration(request):    

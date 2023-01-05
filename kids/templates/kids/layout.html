@@ -32,13 +32,7 @@
                     </li>
 
                     {% if user.is_authenticated %}
-                        <li class="nav-link">
-                            <a href="{% url 'kids:schedule' %}">
-                                <b-button title="View your kids' schedule">
-                                    Schedule
-                                </b-button>
-                            </a>
-                        </li>
+                        
                         <li class="nav-link">
                             <a href="{% url 'kids:kids' %}">
                                 <b-button title="list all your kids">

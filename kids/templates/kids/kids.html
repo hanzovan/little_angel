@@ -7,6 +7,15 @@
 {% block main %}
 
     <h1 class="page-title">Kids</h1>
+
+    <div style="margin: 50px 0 50px 450px;">
+        <p>Refresh all courses required time for 4 weeks</p>
+        <form onsubmit="return confirm('Do you really want to reset all time for your kids?');" action="{% url 'kids:refresh_duration' %}" method="post">
+            {% csrf_token %}
+            <button style="margin: 20px 0 0 80px;">Refresh</button>
+        </form>
+    </div>
+
     <ul class="no-bullet">
         {% for kid in kids %}
 
@@ -32,6 +41,7 @@
             <li>No kid yet</li>
 
         {% endfor %}
+        
     </ul>
 
 {% endblock %}
