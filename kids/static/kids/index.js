@@ -43,5 +43,39 @@ document.addEventListener('DOMContentLoaded', function() {
         })
     }
     
+    document.querySelectorAll('.course-item').forEach(li => {
+        li.style.display = 'none';
+    })
+
+    // Initially show 2 courses
+    setTimeout(showCourse, 1000);
+
+    // Show course if user scroll to the bottom of the page, but don't allow multiple shot
+    let lastfire = 0;
+    let delay = 1000;
+
+    window.onscroll = function() {
+        if ((Date.now() - lastfire) < delay) {
+            return;
+        }
+        if ((window.innerHeight + scrollY) >= document.body.offsetHeight) {
+            setTimeout(showCourse, 1000);
+        }        
+        lastfire = Date.now();
+    }
     
 })
+
+function showCourse() {
+    let counter = 0
+    const quantity = 2
+
+    document.querySelectorAll('.course-item').forEach(li => {
+        if (counter < quantity) {
+            if (li.style.display == 'none') {
+                li.style.display = 'block';
+                counter = counter + 1;
+            }
+        }
+    })
+}
