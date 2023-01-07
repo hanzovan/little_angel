@@ -7,31 +7,42 @@ document.addEventListener('DOMContentLoaded', function() {
     const quit_form = document.querySelector('#quit-course');
 
     // By default the form and the hide btn was hide
-    register_form.style.display = 'none';
-    hide_register_btn.style.display = 'none';
-    quit_form.style.display = 'none';
-    hide_quit_btn.style.display = 'none';
+    if (register_form !== null) {
 
-
-    // If user click show btn, show the form, or vice versa for hide btn
-    show_register_btn.onclick = function() {
-        register_form.style.display = 'block';
-        hide_register_btn.style.display = 'block';
-        show_register_btn.style.display = 'none';
-    }
-    hide_register_btn.onclick = function() {
+        // Hide the register form and hide button by default
         register_form.style.display = 'none';
-        show_register_btn.style.display = 'block';
         hide_register_btn.style.display = 'none';
+
+        // If user click show btn, show the form, or vice versa for hide btn
+        show_register_btn.onclick = function() {
+            register_form.style.display = 'block';
+            hide_register_btn.style.display = 'block';
+            show_register_btn.style.display = 'none';
+        }
+        hide_register_btn.onclick = function() {
+            register_form.style.display = 'none';
+            show_register_btn.style.display = 'block';
+            hide_register_btn.style.display = 'none';
+        }
     }
-    show_quit_btn.onclick = function() {
-        quit_form.style.display = 'block';
-        hide_quit_btn.style.display = 'block';
-        show_quit_btn.style.display = 'none';
-    }
-    hide_quit_btn.onclick = function() {
+
+    if (quit_form !== null) {
+
+        // Hide the form and the hide btn by default
         quit_form.style.display = 'none';
         hide_quit_btn.style.display = 'none';
-        show_quit_btn.style.display = 'block';
-    }
+
+        // If user click show btn, show the form, vice versa
+        show_quit_btn.onclick = function() {
+            quit_form.style.display = 'block';
+            hide_quit_btn.style.display = 'block';
+            show_quit_btn.style.display = 'none';
+        }
+        hide_quit_btn.onclick = function() {
+            quit_form.style.display = 'none';
+            hide_quit_btn.style.display = 'none';
+            show_quit_btn.style.display = 'block';
+        }
+    }    
+    
 })

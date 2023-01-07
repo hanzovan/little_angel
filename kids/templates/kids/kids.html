@@ -38,7 +38,8 @@
 
         {% empty %}
 
-            <li>No kid yet</li>
+            <li style="font-size: 24px; color: red; margin: 50px 0 0 500px;">No kid yet</li>
+            <a style="font-size: 24px; margin: 50px 0 0 450px;" href="{% url 'kids:add_kid' %}">Add your first kid</a>
 
         {% endfor %}
         

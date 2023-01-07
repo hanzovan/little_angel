@@ -48,18 +48,18 @@ document.addEventListener('DOMContentLoaded', function() {
     })
 
     // Initially show 2 courses
-    setTimeout(showCourse, 1000);
+    setTimeout(showCourse, 500);
 
     // Show course if user scroll to the bottom of the page, but don't allow multiple shot
     let lastfire = 0;
-    let delay = 1000;
+    let delay = 500;
 
     window.onscroll = function() {
         if ((Date.now() - lastfire) < delay) {
             return;
         }
         if ((window.innerHeight + scrollY) >= document.body.offsetHeight) {
-            setTimeout(showCourse, 1000);
+            setTimeout(showCourse, 500);
         }        
         lastfire = Date.now();
     }
