@@ -1,3 +1,13 @@
+function moving() {
+    let di = document.querySelector('.red-course-item');
+    let course = di.innerHTML;
+    di.remove();
+    let p = document.createElement('div');
+    p.className = 'red-course-item';
+    p.innerHTML = course;
+    document.querySelector('#red-courses').append(p);
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     
     const show_btn = document.querySelector('#showForm');
@@ -7,20 +17,34 @@ document.addEventListener('DOMContentLoaded', function() {
     const hide_detail_btn = document.querySelector('#hide_kid_detail');
     const kid_detail = document.querySelector('#kid_detail');
 
+    // If kid registed in at least 1 course
+    if (learn_form !== null) {
+        // If course form was shown, continuously moving the course
+        setInterval(moving, 5000);
+        learn_form.style.display = 'none';
+        hide_btn.style.display = 'none';
+        show_btn.onclick = function() {
+            learn_form.style.display = 'block';
+            show_btn.style.display = 'none';
+            hide_btn.style.display = 'block';
+        }
+        hide_btn.onclick = function() {
+            learn_form.style.display = 'none';
+            show_btn.style.display = 'block';
+            hide_btn.style.display = 'none';
+        }
+    }    
+
     // By default the form is hidden
-    learn_form.style.display = 'none';
+    
     kid_detail.style.display = 'none';
     
     // The hide button is also hidden
-    hide_btn.style.display = 'none';
+    
     hide_detail_btn.style.display = 'none';
 
     // When show button is clicked, show the form, hide the show button, show the hide button
-    show_btn.onclick = function() {
-        learn_form.style.display = 'block';
-        show_btn.style.display = 'none';
-        hide_btn.style.display = 'block';
-    }
+    
     show_detail_btn.onclick = function() {
         kid_detail.style.display = 'block';
         show_detail_btn.style.display = 'none';
@@ -28,11 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // When hide button was click, show the show button, hide the form and the hide button
-    hide_btn.onclick = function() {
-        learn_form.style.display = 'none';
-        show_btn.style.display = 'block';
-        hide_btn.style.display = 'none';
-    }
+    
     hide_detail_btn.onclick = function() {
         kid_detail.style.display = 'none';
         hide_detail_btn.style.display = 'none';

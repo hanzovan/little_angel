@@ -14,67 +14,79 @@
 
     <h1 class="page-title">{{ kid.nickname }}</h1>
 
-    <div class="show-hide-btn">
-        <button class="btn btn-link" id="showForm" style="font-size: 24px;">Spend time to learn course</button>
-        <button class="btn btn-link" id="hideForm" style="font-size: 24px; margin-left: 110px;">Hide</button>
-    </div>    
-
-    <div id="learn-course">
-        <h5 style="margin-left: 100px;">{{ kid.nickname }} need to do these courses</h5>
-        {% for time_to_spend in time_to_spends %}
-
-            {% if time_to_spend.duration > 0 %}
-
-                <p style="margin: 20px 0 20px 220px; font-size: 24px; font-weight: bold;">{{ time_to_spend.course.title.upper }}</p>
-                <p style="margin: 20px 0 20px 150px; font-size: 24px; font-weight: bold;"><span style="color: red;">{{ time_to_spend.duration }} hours more</span></p>
-               
-            {% endif %}
-            
-
-            
-
-        {% endfor %}
-        {% for time_to_spend in time_to_spends %}
-
-        {% if time_to_spend.duration == 0 %}
-
-            <p style="margin: 20px 0 20px 220px; font-size: 24px; font-weight: bold;">{{ time_to_spend.course.title.upper }}</p>
-            <p style="margin: 20px 0 20px 60px; font-size: 24px; font-weight: bold;"><span style="color: green;">{{ kid.nickname }} did all required time this month!</span></p>
-
-        {% endif %}
-
-        {% endfor %}
-
-        <form id="spend-time-form" action="{% url 'kids:spend_time' %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="kid_id" value="{{ kid.id }}">
-            <div style="margin: 50px 0 0 110px;">
-                <p><h3>Choose course to do</h3></p>
-            </div>
-            <div style="margin: 20px 0 50px 170px;">
-                <select name="course_id">
-                    <option disabled selected value="">Choose course</option>
-                    {% for course in courses %}
+    {% if time_to_spends %}
     
-                        <option value="{{ course.id }}">{{ course.title.upper }}</option>
-    
-                    {% endfor %}
-                </select>
+        <div class="show-hide-btn">
+            <button class="btn btn-link" id="showForm" style="font-size: 24px;">Spend time to learn course</button>
+            <button class="btn btn-link" id="hideForm" style="font-size: 24px; margin-left: 110px;">Hide</button>
+        </div>    
+
+        <div id="learn-course">
+            
+            <h5 style="margin-left: 100px;">{{ kid.nickname }} need to do these courses</h5>        
+            
+            <div id="red-courses">
+                {% for time_to_spend in time_to_spends %}
+
+                    {% if time_to_spend.duration > 0 %}
+
+                        <div class="red-course-item">
+                            <p style="margin: 20px 0 20px 220px; font-size: 24px; font-weight: bold;">{{ time_to_spend.course.title.upper }}</p>
+                            <p style="margin: 20px 0 20px 150px; font-size: 24px; font-weight: bold;"><span style="color: red;">{{ time_to_spend.duration }} hours more</span></p>
+                        </div>                       
+                    
+                    {% endif %}
+                    
+
+                    
+
+                {% endfor %}
             </div>
             
-            <div style="margin: 50px 0 0 170px;">
-                <p><h3>Duration</h3></p>
-            </div>
-            <div style="margin: 20px 0 50px 170px;">
-                <select name="duration">
-                    <option selected disabled value="">Choose duration</option>
-                    <option value="1">1 HOUR</option>
-                    <option value="2">2 HOURS</option>
-                </select>
-            </div>            
-        </form>        
-        <button style="margin: 10px 0 0 200px;" id="login-btn" type="submit" form="spend-time-form">Confirm</button>
-    </div>
+            {% for time_to_spend in time_to_spends %}
+
+                {% if time_to_spend.duration == 0 %}
+
+                    <p style="margin: 20px 0 20px 220px; font-size: 24px; font-weight: bold;">{{ time_to_spend.course.title.upper }}</p>
+                    <p style="margin: 20px 0 20px 60px; font-size: 24px; font-weight: bold;"><span style="color: green;">{{ kid.nickname }} did all required time this month!</span></p>
+
+                {% endif %}
+
+            {% endfor %}
+
+            <form id="spend-time-form" action="{% url 'kids:spend_time' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="kid_id" value="{{ kid.id }}">
+                <div style="margin: 50px 0 0 110px;">
+                    <p><h3>Choose course to do</h3></p>
+                </div>
+                <div style="margin: 20px 0 50px 170px;">
+                    <select name="course_id">
+                        <option disabled selected value="">Choose course</option>
+                        {% for course in courses %}
+        
+                            <option value="{{ course.id }}">{{ course.title.upper }}</option>
+        
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div style="margin: 50px 0 0 170px;">
+                    <p><h3>Duration</h3></p>
+                </div>
+                <div style="margin: 20px 0 50px 170px;">
+                    <select name="duration">
+                        <option selected disabled value="">Choose duration</option>
+                        <option value="1">1 HOUR</option>
+                        <option value="2">2 HOURS</option>
+                    </select>
+                </div>            
+            </form>        
+            <button style="margin: 10px 0 0 200px;" id="login-btn" type="submit" form="spend-time-form">Confirm</button>
+        </div>
+
+    {% endif %}
+    
 
     <div class="show-hide-btn">
         <button class="btn btn-link" id="show_kid_detail" style="font-size: 24px;">Check {{ kid.nickname }}'s detail</button>
