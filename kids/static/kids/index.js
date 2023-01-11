@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if ((Date.now() - lastfire) < delay) {
             return;
         }
-        if ((window.innerHeight + scrollY) >= document.body.offsetHeight) {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
             setTimeout(showCourse, 500);
         }        
         lastfire = Date.now();

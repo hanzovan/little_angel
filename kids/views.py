@@ -18,29 +18,32 @@ from django.utils.datastructures import MultiValueDictKeyError
 # Add wrapper
 def monthly_refresh(f):
     def wrapper(request, *args, **kwargs):
-        user = User.objects.get(username = request.user.username)
 
-        today = date.today()
+        # If user logged in
+        if request.user.is_authenticated:
+            user = User.objects.get(username = request.user.username)
 
-        if not user.next_refresh_date:
-            user.next_refresh_date = date.today()
+            today = date.today()
 
-        days = days_between(str(today), str(user.next_refresh_date))
+            if not user.next_refresh_date:
+                user.next_refresh_date = date.today()
 
-        # If date is the date need to refresh, the system refresh date itself
-        if days <= 0:
-            
-            time_to_spends = Time_to_spend.objects.filter(kid__parent=user)
-            for time_to_spend in time_to_spends:
-                time_to_spend.duration = time_to_spend.course.time_cost
-                time_to_spend.save()
+            days = days_between(str(today), str(user.next_refresh_date))
 
-            # Adjust refresh date for only this user
-            user.last_refresh_date = today
-            user.next_refresh_date = user.last_refresh_date + timedelta(days=28)
-            user.save()
+            # If date is the date need to refresh, the system refresh date itself
+            if days <= 0:
+                
+                time_to_spends = Time_to_spend.objects.filter(kid__parent=user)
+                for time_to_spend in time_to_spends:
+                    time_to_spend.duration = time_to_spend.course.time_cost
+                    time_to_spend.save()
 
-            request.session['yay_message'] = 'Time to spend was refreshed today!'        
+                # Adjust refresh date for only this user
+                user.last_refresh_date = today
+                user.next_refresh_date = user.last_refresh_date + timedelta(days=28)
+                user.save()
+
+                request.session['yay_message'] = 'Time to spend was refreshed today!'        
 
         return f(request, *args, **kwargs)
     return wrapper
