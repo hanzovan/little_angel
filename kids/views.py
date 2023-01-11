@@ -22,6 +22,9 @@ def monthly_refresh(f):
 
         today = date.today()
 
+        if not user.next_refresh_date:
+            user.next_refresh_date = date.today()
+
         days = days_between(str(today), str(user.next_refresh_date))
 
         # If date is the date need to refresh, the system refresh date itself
