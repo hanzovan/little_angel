@@ -15,7 +15,35 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils.datastructures import MultiValueDictKeyError
 
 
+# Add wrapper
+def monthly_refresh(f):
+    def wrapper(request, *args, **kwargs):
+        user = User.objects.get(username = request.user.username)
+
+        today = date.today()
+
+        days = days_between(str(today), str(user.next_refresh_date))
+
+        # If date is the date need to refresh, the system refresh date itself
+        if days <= 0:
+            
+            time_to_spends = Time_to_spend.objects.filter(kid__parent=user)
+            for time_to_spend in time_to_spends:
+                time_to_spend.duration = time_to_spend.course.time_cost
+                time_to_spend.save()
+
+            # Adjust refresh date for only this user
+            user.last_refresh_date = today
+            user.next_refresh_date = user.last_refresh_date + timedelta(days=28)
+            user.save()
+
+            request.session['yay_message'] = 'Time to spend was refreshed today!'        
+
+        return f(request, *args, **kwargs)
+    return wrapper
+
 # Create your views here.
+@monthly_refresh
 def index(request):
 
     # if user logged in
@@ -151,6 +179,7 @@ def register(request):
         return render(request, "kids/register.html")
 
 @login_required
+@monthly_refresh
 def add_course(request):
     # If user submit form
     if request.method == "POST":
@@ -205,6 +234,7 @@ def add_course(request):
 
 
 @login_required
+@monthly_refresh
 def add_kid(request):
     # If user submit form
     if request.method == "POST":
@@ -235,6 +265,7 @@ def add_kid(request):
 
 
 @login_required
+@monthly_refresh
 def kids(request):
     return render(request, "kids/kids.html", {
         "kids": Kid.objects.filter(parent=request.user)
@@ -242,6 +273,7 @@ def kids(request):
 
 
 @login_required
+@monthly_refresh
 def kid_detail(request, kid_id):
 
     try:
@@ -320,6 +352,7 @@ def kid_detail(request, kid_id):
 
 # Evaluate kid and display it in kid.html
 @login_required
+@monthly_refresh
 def aspect_evaluate(request):
     if request.method == "POST":
         # Define variables
@@ -360,6 +393,7 @@ def aspect_evaluate(request):
 
 
 @login_required
+@monthly_refresh
 def evaluation(request):
     if request.method == "POST":
         # Define variable
@@ -376,6 +410,7 @@ def evaluation(request):
 
 
 @login_required
+@monthly_refresh
 def course_detail(request, course_id):
     course = Course.objects.get(pk=course_id)
     kids = Kid.objects.filter(parent=request.user)
@@ -397,6 +432,7 @@ def course_detail(request, course_id):
 
 
 @login_required
+@monthly_refresh
 def course_register(request):
     # If form was submitted
     if request.method == "POST":
@@ -425,6 +461,7 @@ def course_register(request):
 
 
 @login_required
+@monthly_refresh
 def quit_course(request):
     # If form was submitted
     if request.method == "POST":
@@ -454,6 +491,7 @@ def quit_course(request):
 
 # Allow user to refresh duration that need to be spent for courses for all kids
 @login_required
+@monthly_refresh
 def refresh_duration(request):    
 
     # If user reach route via submiting form
@@ -477,6 +515,7 @@ def refresh_duration(request):
 
 # Allow user to spend time with one course
 @login_required
+@monthly_refresh
 def spend_time(request):
     if request.method == "POST":
         # Define kid and course variables
