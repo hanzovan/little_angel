@@ -193,3 +193,11 @@
             <form id="form1" action="..." method="">
             </form>
             <button type="submit" form="form1">Click</button>
+
+12. Bootstrap css won't load
+    SOLVED:
+        go to the url, copy all and paste to static directory, save as css file and link to the layout
+
+13. div height was not decided by css class
+    SOLVED:
+        height was affect by animation keyframes: height

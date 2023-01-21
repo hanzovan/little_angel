@@ -58,17 +58,31 @@ document.addEventListener('DOMContentLoaded', function() {
         if ((Date.now() - lastfire) < delay) {
             return;
         }
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+        if ((window.innerHeight + window.scrollY) > document.body.offsetHeight) {
             setTimeout(showCourse, 500);
         }        
         lastfire = Date.now();
     }
     
+    document.addEventListener('click', event => {
+        const element = event.target;
+        // If user click hide button
+        if (element.className === 'hide') {            
+            
+            element.parentElement.style.animationPlayState = 'running';
+            element.parentElement.addEventListener('animationend', function() {
+                element.parentElement.remove();
+            })
+                     
+            
+        }
+    })
+
 })
 
 function showCourse() {
     let counter = 0
-    const quantity = 2
+    const quantity = 4
 
     document.querySelectorAll('.course-item').forEach(li => {
         if (counter < quantity) {

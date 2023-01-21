@@ -2,7 +2,7 @@ body {
   font-family: sans-serif;
   font-size: 16px; }
 
-.input-line, .list-line, .list-line-kids, .list-line-detail, .list-line-detail-2 {
+.input-line, .list-line, .list-line-kids, .list-line-detail, .list-line-detail-2, .index-item {
   clear: both;
   vertical-align: baseline;
   padding: 30px 0 30px 0; }
@@ -35,23 +35,27 @@ body {
 
 body {
   color: black;
-  padding: 10px; }
+  padding: 10px;
+  background-color: #FFDCE7; }
 
 main {
   min-height: 400px; }
 
 nav {
-  padding: 10px;
+  padding: 20px 40px 20px 40px;
   margin-bottom: 10px; }
 
+.navbar-custom {
+  background-color: #FFC1CC; }
+
 footer {
-  margin-top: 50px; }
+  margin-top: 150px; }
 
 h1 {
   color: brown; }
 
 li {
-  line-height: 45px; }
+  line-height: min(45px); }
 
 .input-left {
   font-size: 16px;
@@ -67,7 +71,7 @@ li {
   font-style: italic; }
 
 .list-line {
-  margin: 50px 0 300px 200px; }
+  margin-left: 150px; }
 
 .list-line-kids {
   margin: 50px 0 150px 200px; }
@@ -153,5 +157,60 @@ form {
 
 #learn-course {
   margin: 50px 0 50px 350px; }
+
+.index-item {
+  background-color: #f7f5bc;
+  width: 850px;
+  height: 500px;
+  padding: 40px; }
+
+.course-item {
+  animation-name: hide;
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+  animation-play-state: paused; }
+
+@keyframes hide {
+  0% {
+    opacity: 1;
+    line-height: 16px;
+    height: 500px;
+    padding: 40px;
+    margin-top: 50px;
+    margin-bottom: 50px; }
+  75% {
+    opacity: 0;
+    line-height: 16px;
+    height: 500px;
+    padding: 40px;
+    margin-top: 50px;
+    margin-bottom: 50px; }
+  100% {
+    opacity: 0;
+    line-height: 0;
+    height: 0;
+    padding: 0;
+    margin-top: 0;
+    margin-bottom: 0; } }
+.hide {
+  float: right;
+  margin-right: 170px; }
+
+.red-course-item {
+  animation-name: move-div;
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+  animation-play-state: paused; }
+
+@keyframes move-div {
+  0% {
+    opacity: 1;
+    line-height: 1.5; }
+  75% {
+    opacity: 0;
+    line-height: 1.5; }
+  100% {
+    opacity: 0;
+    line-height: 0; } }
 
 /*# sourceMappingURL=styles.css.map */

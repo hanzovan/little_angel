@@ -1,11 +1,15 @@
 function moving() {
     let di = document.querySelector('.red-course-item');
     let course = di.innerHTML;
-    di.remove();
-    let p = document.createElement('div');
-    p.className = 'red-course-item';
-    p.innerHTML = course;
-    document.querySelector('#red-courses').append(p);
+    di.style.animationPlayState = 'running';
+    di.addEventListener('animationend', function() {
+        di.remove();
+        let p = document.createElement('div');
+        p.className = 'red-course-item';
+        p.innerHTML = course;
+        document.querySelector('#red-courses').append(p);
+    })
+    
 }
 
 document.addEventListener('DOMContentLoaded', function() {

@@ -48,7 +48,7 @@ def monthly_refresh(f):
         return f(request, *args, **kwargs)
     return wrapper
 
-# Create your views here.
+
 @monthly_refresh
 def index(request):
 
