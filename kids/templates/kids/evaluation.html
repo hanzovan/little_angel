@@ -7,6 +7,7 @@
 {% block main %}
 
     <h1 class="page-title">Evaluation</h1>
+    
     <div class="list-line-detail-2">
         <div class="list-left-detail-2">
             <p>{{ aspect_name }}</p>
@@ -14,7 +15,7 @@
         <div class="list-right-detail-2">
             {% if field_display == 'Very Low' or field_display == 'Low' %}
 
-                <strong style="color: red; margin-left: 50px;">{{ field_display }}</strong>
+                <strong style="color: red; margin-left: 50px;">{{ field_display }}</strong>                
 
             {% elif field_display == 'Good' or field_display == 'Excellent' %}
 
@@ -49,6 +50,23 @@
     </div>
     <div class="confirm-btn">
         <button type="submit" form="form1" id="login-btn">Confirm</button>
+    </div>
+    <div style="margin: 100px 200px 50px 200px;">
+        <i>{{ this_aspect.description }}</i>        
+    </div>
+    <div style="margin: 50px 0 50px 200px;">
+        <h4 style="color: red;">Courses can improve {{ aspect_name }} development for your kid</h4>
+                <div style="color: green; margin-left: 200px; margin-top: 50px;">
+                    {% for course in courses %}
+                        <div style="margin: 20px 0 20px 0;">
+                            <a href="{% url 'kids:course_detail' course_id=course.id %}">
+                                {{ course.title }}
+                            </a>
+                        </div>
+                        
+
+                    {% endfor %}
+                </div>
     </div>
     
     

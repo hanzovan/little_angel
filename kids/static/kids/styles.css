@@ -168,7 +168,9 @@ form {
   animation-name: hide;
   animation-duration: 2s;
   animation-fill-mode: forwards;
-  animation-play-state: paused; }
+  animation-play-state: paused;
+  margin-top: 50px;
+  margin-bottom: 50px; }
 
 @keyframes hide {
   0% {
@@ -205,12 +207,18 @@ form {
 @keyframes move-div {
   0% {
     opacity: 1;
-    line-height: 1.5; }
+    line-height: 1.5;
+    margin-top: 20px;
+    margin-bottom: 20px; }
   75% {
     opacity: 0;
-    line-height: 1.5; }
+    line-height: 1.5;
+    margin-top: 20px;
+    margin-bottom: 20px; }
   100% {
     opacity: 0;
-    line-height: 0; } }
+    line-height: 0;
+    margin-top: 0;
+    margin-bottom: 0; } }
 
 /*# sourceMappingURL=styles.css.map */

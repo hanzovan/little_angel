@@ -330,8 +330,7 @@ def kid_detail(request, kid_id):
     ]
 
     # Information that change overtime and evaluation
-    details_2 = [
-        {'key':'Status', 'sub':'status','value': kid.get_status_display},
+    details_2 = [        
         {'key':'Physical Growth', 'sub':'physical_growth', 'value': kid.get_physical_growth_display},
         {'key':'Motor', 'sub':'motor','value': kid.get_motor_display},
         {'key':'Cognitive/Intellectual', 'sub':'cog_int', 'value': kid.get_cog_int_display},
@@ -370,7 +369,6 @@ def aspect_evaluate(request):
         field_display = kid._get_FIELD_display(field_object)
 
         details_2 = [
-        {'key':'Status', 'sub':'status','value': kid.get_status_display},
         {'key':'Physical Growth', 'sub':'physical_growth', 'value': kid.get_physical_growth_display},
         {'key':'Motor', 'sub':'motor','value': kid.get_motor_display},
         {'key':'Cognitive/Intellectual', 'sub':'cog_int', 'value': kid.get_cog_int_display},
@@ -388,13 +386,29 @@ def aspect_evaluate(request):
 
         aspect_name = getKey(details_2, aspect)
         
+        # Get the aspect
+        this_aspect = Aspect.objects.get(title__contains=aspect_name)
+
+        # Get the courses that related to this aspect
+        related_courses = this_aspect.target.all()
+        
+        # Get the courses that this kid is currently studying
+        current_courses = kid.learner.all()
+
+        # Get the courses that related to this aspect but this kid did not studying yet
+        proposed_courses = related_courses.difference(current_courses)
+
+
+
         return render(request, "kids/evaluation.html", {
             "kid": kid,
             "aspect": aspect,
             "aspect_name": aspect_name,
             "field_object": field_object,
             "field_value": field_value,
-            "field_display": field_display
+            "field_display": field_display,
+            "courses": proposed_courses,
+            "this_aspect": this_aspect
         })
 
 
@@ -559,3 +573,4 @@ def spend_time(request):
         return HttpResponseRedirect(reverse("kids:kid_detail", args=request.POST['kid_id']))
 
         
+# Get all the courses that help develop an aspect in aspect evaluation round
