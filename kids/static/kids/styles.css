@@ -26,7 +26,6 @@ body {
 
 .input-right, .list-right, .list-right-detail, .list-right-detail-2, .list-right-detail-link {
   display: inline-block;
-  vertical-align: middle;
   min-width: 167px;
   min-height: 41px;
   height: 42px;

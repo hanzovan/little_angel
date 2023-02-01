@@ -32,7 +32,10 @@ $big-color: brown;
 }
 %line-right {
     display: inline-block;
-    vertical-align: middle;
+
+    // This line cause other div to jump up to each other
+    // vertical-align: middle;
+
     min-width: 167px;
     min-height: 41px;
     height: 42px;
