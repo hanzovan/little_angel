@@ -573,4 +573,3 @@ def spend_time(request):
         return HttpResponseRedirect(reverse("kids:kid_detail", args=request.POST['kid_id']))
 
         
-# Get all the courses that help develop an aspect in aspect evaluation round
